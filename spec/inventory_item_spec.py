@@ -14,12 +14,21 @@ class InventoryItemCreated(object):
         inventory_item.id = self.id
         inventory_item.name = self.name
 
+
+class InventoryItemRenamed(object):
+    def __init__(self, new_name):
+        self.new_name = new_name
+
+    def apply(self, inventory_item):
+        inventory_item.name = self.new_name
+
+
 class InventoryItem(object):
     def __init__(self, id, name):
         self.__applyChanges(InventoryItemCreated(id, name))
 
     def rename(self, new_name):
-        self.name = new_name
+        self.__applyChanges(InventoryItemRenamed(new_name))
 
     def __applyChanges(self, event):
         event.apply(self)
