@@ -4,10 +4,19 @@ from sure import expect
 IRRELEVANT_ID = 'id'
 IRRELEVANT_NAME = 'irrelevant name'
 
-class InventoryItem(object):
+class InventoryItemCreated(object):
     def __init__(self, id, name):
         self.id = id
         self.name = name
+
+class InventoryItem(object):
+    def __init__(self, id, name):
+        self.__applyChanges(InventoryItemCreated(id, name))
+
+    def __applyChanges(self, event):
+        if type(event) == InventoryItemCreated:
+            self.id = event.id
+            self.name = event.name
 
 with describe(InventoryItem) as _:
 
