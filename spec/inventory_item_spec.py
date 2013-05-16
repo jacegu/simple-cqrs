@@ -9,14 +9,16 @@ class InventoryItemCreated(object):
         self.id = id
         self.name = name
 
+    def apply(self, inventory_item):
+        inventory_item.id = self.id
+        inventory_item.name = self.name
+
 class InventoryItem(object):
     def __init__(self, id, name):
         self.__applyChanges(InventoryItemCreated(id, name))
 
     def __applyChanges(self, event):
-        if type(event) == InventoryItemCreated:
-            self.id = event.id
-            self.name = event.name
+        event.apply(self)
 
 with describe(InventoryItem) as _:
 
