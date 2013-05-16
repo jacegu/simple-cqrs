@@ -3,6 +3,10 @@ from sure import expect
 
 IRRELEVANT_NAME = 'irrelevant name'
 
+class InventoryItem(object):
+    def __init__(self, name):
+        self.name = name
+
 with describe(InventoryItem) as _:
 
      def it_has_a_name():
