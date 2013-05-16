@@ -1,8 +1,9 @@
-from mamba import describe, before
+from mamba import describe, before, context
 from sure import expect
 
 IRRELEVANT_ID = 'id'
 IRRELEVANT_NAME = 'irrelevant name'
+OTHER_NAME = 'other name'
 
 class InventoryItemCreated(object):
     def __init__(self, id, name):
@@ -31,3 +32,9 @@ with describe(InventoryItem) as _:
 
     def it_has_a_name():
         expect(_.item.name).to.be.equal(IRRELEVANT_NAME)
+
+    with context('renaming'):
+
+        def it_can_be_renamed():
+            _.item.rename(OTHER_NAME)
+            expect(_.item.name).to.be.equal(OTHER_NAME)
