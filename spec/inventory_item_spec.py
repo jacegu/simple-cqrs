@@ -6,6 +6,7 @@ IRRELEVANT_NAME = 'irrelevant name'
 
 class InventoryItem(object):
     def __init__(self, id, name):
+        self.id = id
         self.name = name
 
 with describe(InventoryItem) as _:
