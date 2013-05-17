@@ -30,6 +30,13 @@ class InventoryItemDeactivated(object):
         inventory_item.active = False
 
 
+class ItemsCheckedInToInventory(object):
+    def __init__(self, count):
+        self.count = count
+
+    def apply(self, inventory_item):
+        inventory_item.count += self.count
+
 class InvalidOperationError(RuntimeError):
     pass
 
@@ -56,7 +63,7 @@ class InventoryItem(object):
         return not self.active
 
     def check_in(self, count):
-        self.count += count
+        self.__applyChanges(ItemsCheckedInToInventory(count))
 
     def __applyChanges(self, event):
         event.apply(self)
