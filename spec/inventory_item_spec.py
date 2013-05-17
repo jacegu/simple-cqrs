@@ -26,6 +26,7 @@ class InventoryItemRenamed(object):
 class InventoryItem(object):
     def __init__(self, id, name):
         self.__applyChanges(InventoryItemCreated(id, name))
+        self.active = True
 
     def rename(self, new_name):
         if self.__invalid_name(new_name):
