@@ -33,6 +33,9 @@ class InventoryItem(object):
             raise ValueError("\"%s\" is not a valid Inventory Item name" % new_name)
         self.__applyChanges(InventoryItemRenamed(new_name))
 
+    def deactivate(self):
+        self.active = False
+
     def __applyChanges(self, event):
         event.apply(self)
 
@@ -66,5 +69,5 @@ with describe(InventoryItem) as _:
             expect(_.item.active).to.be.true
 
         def it_can_be_deactivated():
-            _.item.deactivate
+            _.item.deactivate()
             expect(_.item.active).to.be.false
