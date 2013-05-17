@@ -77,6 +77,8 @@ class InventoryItem(object):
         self.__applyChanges(ItemsCheckedInToInventory(count))
 
     def remove(self, count):
+        if count <= 0:
+            raise InvalidOperationError('only 1 or more items can be removed')
         self.__applyChanges(ItemsRemovedFromInventory(count))
 
     def __applyChanges(self, event):
