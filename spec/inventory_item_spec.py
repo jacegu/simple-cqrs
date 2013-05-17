@@ -98,3 +98,7 @@ with describe(InventoryItem) as _:
     with context('checking items in'):
         def it_starts_with_no_items():
             expect(_.item.count).to.equal(0)
+
+        def it_can_check_in_one_or_more_items():
+            _.item.check_in(8); _.item.check_in(12)
+            expect(_.item.count).to.equal(20)
