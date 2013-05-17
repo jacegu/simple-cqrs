@@ -28,12 +28,16 @@ class InventoryItem(object):
         self.__applyChanges(InventoryItemCreated(id, name))
 
     def rename(self, new_name):
-        if new_name is None or new_name == '':
+        if self.__invalid_name(new_name):
             raise ValueError("\"%s\" is not a valid Inventory Item name" % new_name)
         self.__applyChanges(InventoryItemRenamed(new_name))
 
     def __applyChanges(self, event):
         event.apply(self)
+
+    def __invalid_name(self, name):
+        return name is None or name == ''
+
 
 with describe(InventoryItem) as _:
 
@@ -48,7 +52,6 @@ with describe(InventoryItem) as _:
         expect(_.item.name).to.be.equal(IRRELEVANT_NAME)
 
     with context('renaming'):
-
         def it_can_be_renamed_if_the_new_name_is_valid():
             _.item.rename(OTHER_NAME)
             expect(_.item.name).to.be.equal(OTHER_NAME)
@@ -56,3 +59,4 @@ with describe(InventoryItem) as _:
         def it_cannot_be_renamed_if_the_new_name_is_invalid():
             expect(_.item.rename).when.called_with(None).to.throw(ValueError)
             expect(_.item.rename).when.called_with('').to.throw(ValueError)
+
