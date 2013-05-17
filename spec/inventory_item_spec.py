@@ -28,6 +28,8 @@ class InventoryItem(object):
         self.__applyChanges(InventoryItemCreated(id, name))
 
     def rename(self, new_name):
+        if new_name is None or new_name == '':
+            raise ValueError("\"%s\" is not a valid Inventory Item name" % new_name)
         self.__applyChanges(InventoryItemRenamed(new_name))
 
     def __applyChanges(self, event):
