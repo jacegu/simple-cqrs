@@ -64,3 +64,7 @@ with describe(InventoryItem) as _:
     with context('deactivating'):
         def it_starts_active():
             expect(_.item.active).to.be.true
+
+        def it_can_be_deactivated():
+            _.item.deactivate
+            expect(_.item.active).to.be.false
