@@ -42,9 +42,13 @@ class InventoryItem(object):
         self.__applyChanges(InventoryItemRenamed(new_name))
 
     def deactivate(self):
-        if not self.active:
+        if self.is_inactive:
             raise InvalidOperationError("Cannot deactivate an inactive inventory item")
         self.__applyChanges(InventoryItemDeactivated())
+
+    @property
+    def is_inactive(self):
+        return not self.active
 
     def __applyChanges(self, event):
         event.apply(self)
