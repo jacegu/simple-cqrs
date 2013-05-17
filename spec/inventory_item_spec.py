@@ -60,3 +60,6 @@ with describe(InventoryItem) as _:
             expect(_.item.rename).when.called_with(None).to.throw(ValueError)
             expect(_.item.rename).when.called_with('').to.throw(ValueError)
 
+    with context('deactivating'):
+        def it_starts_active():
+            expect(_.item.active).to.be.true
