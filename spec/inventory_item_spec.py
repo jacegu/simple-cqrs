@@ -131,6 +131,7 @@ with describe(InventoryItem) as _:
 
         def it_cannot_check_in_less_than_one_item():
             expect(_.item.check_in).when.called_with(0).to.throw(InvalidOperationError)
+            expect(_.item.check_in).when.called_with(-1).to.throw(InvalidOperationError)
 
     with context('removing items'):
         def it_can_remove_one_or_more_items():
@@ -140,3 +141,4 @@ with describe(InventoryItem) as _:
 
         def it_cannot_remove_less_than_one_item():
             expect(_.item.remove).when.called_with(0).to.throw(InvalidOperationError)
+            expect(_.item.remove).when.called_with(-1).to.throw(InvalidOperationError)
