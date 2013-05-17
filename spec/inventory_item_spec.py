@@ -14,6 +14,7 @@ class InventoryItemCreated(object):
         inventory_item.id = self.id
         inventory_item.name = self.name
         inventory_item.active = True
+        inventory_item.count = 0
 
 
 class InventoryItemRenamed(object):
@@ -35,7 +36,6 @@ class InvalidOperationError(RuntimeError):
 class InventoryItem(object):
     def __init__(self, id, name):
         self.__applyChanges(InventoryItemCreated(id, name))
-        self.count = 0
 
     def rename(self, new_name):
         if self.__invalid_name(new_name):
