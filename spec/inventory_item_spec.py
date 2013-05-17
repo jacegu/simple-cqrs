@@ -135,3 +135,6 @@ with describe(InventoryItem) as _:
             _.item.check_in(5)
             _.item.remove(3)
             expect(_.item.count).to.be.equal(2)
+
+        def it_cannot_remove_less_than_one_item():
+            expect(_.item.remove).when.called_with(0).to.throw(InvalidOperationError)
