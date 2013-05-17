@@ -93,3 +93,7 @@ with describe(InventoryItem) as _:
         def it_cannot_be_deactivated_when_inactive():
             _.item.deactivate()
             expect(_.item.deactivate).when.called.to.throw(InvalidOperationError)
+
+    with context('checking items in'):
+        def it_starts_with_no_items():
+            expect(_.item.count).to.equal(0)
