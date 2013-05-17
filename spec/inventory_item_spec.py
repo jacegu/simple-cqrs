@@ -37,6 +37,15 @@ class ItemsCheckedInToInventory(object):
     def apply(self, inventory_item):
         inventory_item.count += self.count
 
+
+class ItemsRemovedFromInventory(object):
+    def __init__(self, count):
+        self.count = count
+
+    def apply(self, inventory_item):
+        inventory_item.count -= self.count
+
+
 class InvalidOperationError(RuntimeError):
     pass
 
@@ -68,7 +77,7 @@ class InventoryItem(object):
         self.__applyChanges(ItemsCheckedInToInventory(count))
 
     def remove(self, count):
-        self.count -= count
+        self.__applyChanges(ItemsRemovedFromInventory(count))
 
     def __applyChanges(self, event):
         event.apply(self)
