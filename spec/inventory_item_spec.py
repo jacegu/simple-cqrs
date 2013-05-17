@@ -55,6 +55,9 @@ class InventoryItem(object):
     def is_inactive(self):
         return not self.active
 
+    def check_in(self, count):
+        self.count += count
+
     def __applyChanges(self, event):
         event.apply(self)
 
