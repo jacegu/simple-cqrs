@@ -47,6 +47,10 @@ with describe(InventoryItem) as _:
 
     with context('renaming'):
 
-        def it_can_be_renamed():
+        def it_can_be_renamed_if_the_new_name_is_valid():
             _.item.rename(OTHER_NAME)
             expect(_.item.name).to.be.equal(OTHER_NAME)
+
+        def it_cannot_be_renamed_if_the_new_name_is_invalid():
+            expect(_.item.rename).when.called_with(None).to.throw(ValueError)
+            expect(_.item.rename).when.called_with('').to.throw(ValueError)
