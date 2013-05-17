@@ -67,6 +67,9 @@ class InventoryItem(object):
             raise InvalidOperationError('only 1 or more items can be checked in')
         self.__applyChanges(ItemsCheckedInToInventory(count))
 
+    def remove(self, count):
+        self.count -= count
+
     def __applyChanges(self, event):
         event.apply(self)
 
