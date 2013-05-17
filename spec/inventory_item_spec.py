@@ -86,6 +86,12 @@ with describe(InventoryItem) as _:
     def it_has_a_name():
         expect(_.item.name).to.be.equal(IRRELEVANT_NAME)
 
+    def it_has_no_items():
+        expect(_.item.count).to.equal(0)
+
+    def it_is_active():
+        expect(_.item.is_active).to.be.true
+
     with context('renaming'):
         def it_can_be_renamed_if_the_new_name_is_valid():
             _.item.rename(OTHER_NAME)
@@ -96,9 +102,6 @@ with describe(InventoryItem) as _:
             expect(_.item.rename).when.called_with('').to.throw(ValueError)
 
     with context('deactivating'):
-        def it_starts_active():
-            expect(_.item.is_active).to.be.true
-
         def it_can_be_deactivated_when_active():
             _.item.deactivate()
             expect(_.item.is_active).to.be.false
@@ -108,9 +111,6 @@ with describe(InventoryItem) as _:
             expect(_.item.deactivate).when.called.to.throw(InvalidOperationError)
 
     with context('checking items in'):
-        def it_starts_with_no_items():
-            expect(_.item.count).to.equal(0)
-
         def it_can_check_in_one_or_more_items():
             _.item.check_in(8); _.item.check_in(12)
             expect(_.item.count).to.equal(20)
