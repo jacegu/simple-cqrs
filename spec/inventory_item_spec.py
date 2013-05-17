@@ -47,6 +47,10 @@ class InventoryItem(object):
         self.__applyChanges(InventoryItemDeactivated())
 
     @property
+    def is_active(self):
+        return self.active
+
+    @property
     def is_inactive(self):
         return not self.active
 
@@ -80,12 +84,12 @@ with describe(InventoryItem) as _:
 
     with context('deactivating'):
         def it_starts_active():
-            expect(_.item.active).to.be.true
+            expect(_.item.is_active).to.be.true
 
         def it_can_be_deactivated_when_active():
             _.item.deactivate()
-            expect(_.item.active).to.be.false
+            expect(_.item.is_active).to.be.false
 
-        def it_cannot_be_deactivated_when_not_active():
+        def it_cannot_be_deactivated_when_inactive():
             _.item.deactivate()
             expect(_.item.deactivate).when.called.to.throw(InvalidOperationError)
