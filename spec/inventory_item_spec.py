@@ -29,6 +29,9 @@ class InventoryItemDeactivated(object):
         inventory_item.active = False
 
 
+class InvalidOperationError(RuntimeError):
+    pass
+
 class InventoryItem(object):
     def __init__(self, id, name):
         self.__applyChanges(InventoryItemCreated(id, name))
@@ -73,6 +76,10 @@ with describe(InventoryItem) as _:
         def it_starts_active():
             expect(_.item.active).to.be.true
 
-        def it_can_be_deactivated():
+        def it_can_be_deactivated_when_active():
             _.item.deactivate()
             expect(_.item.active).to.be.false
+
+        def it_cannot_be_deactivated_when_not_active():
+            _.item.deactivate()
+            expect(_.item.deactivate).when.called.to.throw(InvalidOperationError)
