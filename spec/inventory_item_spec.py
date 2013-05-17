@@ -63,6 +63,8 @@ class InventoryItem(object):
         return not self.active
 
     def check_in(self, count):
+        if count <= 0:
+            raise InvalidOperationError('only 1 or more items can be checked in')
         self.__applyChanges(ItemsCheckedInToInventory(count))
 
     def __applyChanges(self, event):
