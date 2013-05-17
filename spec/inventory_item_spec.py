@@ -24,6 +24,11 @@ class InventoryItemRenamed(object):
         inventory_item.name = self.new_name
 
 
+class InventoryItemDeactivated(object):
+    def apply(self, inventory_item):
+        inventory_item.active = False
+
+
 class InventoryItem(object):
     def __init__(self, id, name):
         self.__applyChanges(InventoryItemCreated(id, name))
@@ -34,7 +39,7 @@ class InventoryItem(object):
         self.__applyChanges(InventoryItemRenamed(new_name))
 
     def deactivate(self):
-        self.active = False
+        self.__applyChanges(InventoryItemDeactivated())
 
     def __applyChanges(self, event):
         event.apply(self)
