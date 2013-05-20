@@ -29,3 +29,11 @@ with describe(Repository) as _:
             _.repository.save(aggregate)
             assert_that(_.storage.push, called().with_args(IRRELEVANT_ID, IRRELEVANT_CHANGE1))
             assert_that(_.storage.push, called().with_args(IRRELEVANT_ID, IRRELEVANT_CHANGE2))
+
+        def it_marks_the_changes_as_committed():
+            aggregate = Spy()
+            aggregate.id = IRRELEVANT_ID
+            aggregate.uncommitted_changes = [IRRELEVANT_CHANGE1, IRRELEVANT_CHANGE2]
+            _.repository.save(aggregate)
+            assert_that(aggregate.changes_committed, called())
+
