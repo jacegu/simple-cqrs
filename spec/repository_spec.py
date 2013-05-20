@@ -5,6 +5,14 @@ IRRELEVANT_ID = 'irrelevant id'
 IRRELEVANT_CHANGE1 = 'irrelevant change 1'
 IRRELEVANT_CHANGE2 = 'irrelevant change 2'
 
+class Repository(object):
+    def __init__(self, storage):
+        self.storage = storage
+
+    def save(self, aggregate):
+        for change in aggregate.uncommitted_changes:
+            self.storage.push(aggregate.id, change)
+
 
 with describe(Repository) as _:
 
