@@ -12,6 +12,7 @@ class Repository(object):
     def save(self, aggregate):
         for change in aggregate.uncommitted_changes:
             self.storage.push(aggregate.id, change)
+        aggregate.changes_committed()
 
 
 with describe(Repository) as _:
