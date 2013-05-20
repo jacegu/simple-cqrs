@@ -1,1 +1,2 @@
 mamba==0.3
+doublex==1.6.6
