@@ -22,19 +22,19 @@ with describe(Repository) as _:
         _.storage = Spy()
         _.repository = Repository(_.storage)
 
+    @before.each
+    def create_aggregate():
+        _.aggregate = Spy()
+        _.aggregate.id = IRRELEVANT_ID
+        _.aggregate.uncommitted_changes = [IRRELEVANT_CHANGE1, IRRELEVANT_CHANGE2]
+
     with context('saving an aggregate'):
         def it_saves_all_uncommited_changes():
-            aggregate = Stub()
-            aggregate.id = IRRELEVANT_ID
-            aggregate.uncommitted_changes = [IRRELEVANT_CHANGE1, IRRELEVANT_CHANGE2]
-            _.repository.save(aggregate)
+            _.repository.save(_.aggregate)
             assert_that(_.storage.push, called().with_args(IRRELEVANT_ID, IRRELEVANT_CHANGE1))
             assert_that(_.storage.push, called().with_args(IRRELEVANT_ID, IRRELEVANT_CHANGE2))
 
         def it_marks_the_changes_as_committed():
-            aggregate = Spy()
-            aggregate.id = IRRELEVANT_ID
-            aggregate.uncommitted_changes = [IRRELEVANT_CHANGE1, IRRELEVANT_CHANGE2]
-            _.repository.save(aggregate)
-            assert_that(aggregate.changes_committed, called())
+            _.repository.save(_.aggregate)
+            assert_that(_.aggregate.changes_committed, called())
 
