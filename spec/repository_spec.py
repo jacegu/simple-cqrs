@@ -1,6 +1,6 @@
 from mamba import describe, context, before
 from doublex.pyDoubles import *
-from sure import *
+from sure import expect
 
 IRRELEVANT_ID = 'irrelevant id'
 IRRELEVANT_CHANGE1 = 'irrelevant change 1'
@@ -26,7 +26,11 @@ class Repository(object):
         aggregate.changes_committed()
 
     def find_by_id(self, id):
-        return self.klass.from_events(self.storage.get_aggregate_changes(id))
+        events = self.storage.get_aggregate_changes(id)
+        if len(events) is 0:
+            return None
+        else:
+            return self.klass.from_events(events)
 
 
 with describe(Repository) as _:
