@@ -26,7 +26,9 @@ class Repository(object):
         aggregate.changes_committed()
 
     def find_by_id(self, id):
-        events = self.storage.get_aggregate_changes(id)
+        return self._create_aggregate_from_events(self.storage.get_aggregate_changes(id))
+
+    def _create_aggregate_from_events(self, events):
         if len(events) is 0:
             return None
         else:
