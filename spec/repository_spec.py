@@ -1,4 +1,4 @@
-from mamba import describe, context, before, skip
+from mamba import describe, context, before
 from doublex.pyDoubles import *
 from sure import *
 
@@ -34,7 +34,7 @@ with describe(Repository) as _:
     @before.each
     def create_repository():
         _.storage = spy()
-        _.aggregate_class = stub()
+        _.aggregate_class = spy()
         _.repository = Repository(_.aggregate_class, _.storage)
 
     @before.each
@@ -59,6 +59,7 @@ with describe(Repository) as _:
           when(_.aggregate_class.from_events).with_args(CHANGES).then_return(_.aggregate)
           expect(_.repository.find_by_id(IRRELEVANT_ID)).to.be.equal(_.aggregate)
 
-        @skip
         def it_returns_none_when_no_aggregate_with_provided_id_is_found():
-            pass
+          when(_.storage.get_aggregate_changes).with_args(IRRELEVANT_ID).then_return([])
+          expect(_.repository.find_by_id(IRRELEVANT_ID)).to.be.equal(None)
+          assert_that_method(_.aggregate_class.from_events).was_never_called()
