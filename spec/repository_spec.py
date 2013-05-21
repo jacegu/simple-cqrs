@@ -8,13 +8,17 @@ IRRELEVANT_CHANGE2 = 'irrelevant change 2'
 CHANGES = [IRRELEVANT_CHANGE1, IRRELEVANT_CHANGE2]
 
 class Repository(object):
-    def __init__(self, storage):
+    def __init__(self, klass, storage):
+        self.klass = klass
         self.storage = storage
 
     def save(self, aggregate):
         for change in aggregate.uncommitted_changes:
             self.storage.push(aggregate.id, change)
         aggregate.changes_committed()
+
+    def find_by_id(self, id):
+        return self.klass.from_events(self.storage.get_aggregate_changes(id))
 
 
 with describe(Repository) as _:
@@ -23,7 +27,7 @@ with describe(Repository) as _:
     def create_repository():
         _.storage = spy()
         _.aggregate_class = stub()
-        _.repository = Repository(_.storage)
+        _.repository = Repository(_.aggregate_class, _.storage)
 
     @before.each
     def create_aggregate():
