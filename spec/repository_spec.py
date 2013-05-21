@@ -7,6 +7,14 @@ IRRELEVANT_CHANGE1 = 'irrelevant change 1'
 IRRELEVANT_CHANGE2 = 'irrelevant change 2'
 CHANGES = [IRRELEVANT_CHANGE1, IRRELEVANT_CHANGE2]
 
+class Aggregate(object):
+    def from_events():
+        raise NotImplementedError
+
+    def changes_committed(self):
+        raise NotImplementedError
+
+
 class Repository(object):
     def __init__(self, klass, storage):
         self.klass = klass
@@ -31,7 +39,7 @@ with describe(Repository) as _:
 
     @before.each
     def create_aggregate():
-        _.aggregate = spy()
+        _.aggregate = spy(Aggregate)
         _.aggregate.id = IRRELEVANT_ID
         _.aggregate.uncommitted_changes = CHANGES
 
