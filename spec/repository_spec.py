@@ -1,5 +1,5 @@
 from mamba import describe, context, before
-from doublex.pyDoubles import *
+from doublex import *
 from sure import expect
 
 IRRELEVANT_ID = 'irrelevant id'
@@ -29,43 +29,40 @@ class Repository(object):
         return self._create_aggregate_from_events(self.storage.get_aggregate_changes(id))
 
     def _create_aggregate_from_events(self, events):
-        if len(events) is 0:
-            return None
-        else:
-            return self.klass.from_events(events)
+        return None if len(events) is 0 else self.klass.from_events(events)
 
 
 with describe(Repository) as _:
 
     @before.each
     def create_repository():
-        _.storage = spy()
-        _.aggregate_class = spy()
+        _.storage = Spy()
+        _.aggregate_class = Spy()
         _.repository = Repository(_.aggregate_class, _.storage)
 
     @before.each
     def create_aggregate():
-        _.aggregate = spy(Aggregate)
+        _.aggregate = Spy(Aggregate)
         _.aggregate.id = IRRELEVANT_ID
         _.aggregate.uncommitted_changes = CHANGES
 
     with context('saving an aggregate'):
         def it_saves_all_uncommited_changes():
             _.repository.save(_.aggregate)
-            assert_that_method(_.storage.push).was_called().with_args(IRRELEVANT_ID, IRRELEVANT_CHANGE1)
-            assert_that_method(_.storage.push).was_called().with_args(IRRELEVANT_ID, IRRELEVANT_CHANGE2)
+            assert_that(_.storage.push, called().with_args(IRRELEVANT_ID, IRRELEVANT_CHANGE1))
+            assert_that(_.storage.push, called().with_args(IRRELEVANT_ID, IRRELEVANT_CHANGE2))
 
         def it_marks_the_changes_as_committed():
             _.repository.save(_.aggregate)
-            assert_that_method(_.aggregate.changes_committed).was_called()
+            assert_that(_.aggregate.changes_committed, called())
 
     with context('finding an aggregate by id'):
         def it_returns_the_aggregate():
-          when(_.storage.get_aggregate_changes).with_args(IRRELEVANT_ID).then_return(CHANGES)
-          when(_.aggregate_class.from_events).with_args(CHANGES).then_return(_.aggregate)
-          expect(_.repository.find_by_id(IRRELEVANT_ID)).to.be.equal(_.aggregate)
+            with _.storage: _.storage.get_aggregate_changes(IRRELEVANT_ID).returns(CHANGES)
+            with _.aggregate_class as klass: klass.from_events(CHANGES).returns(_.aggregate)
+            expect(_.repository.find_by_id(IRRELEVANT_ID)).to.be.equal(_.aggregate)
 
         def it_returns_none_when_no_aggregate_with_provided_id_is_found():
-          when(_.storage.get_aggregate_changes).with_args(IRRELEVANT_ID).then_return([])
-          expect(_.repository.find_by_id(IRRELEVANT_ID)).to.be.equal(None)
-          assert_that_method(_.aggregate_class.from_events).was_never_called()
+            with _.storage: _.storage.get_aggregate_changes(IRRELEVANT_ID).returns([])
+            expect(_.repository.find_by_id(IRRELEVANT_ID)).to.be.equal(None)
+            assert_that(_.aggregate_class.from_events, never(called()))
