@@ -20,11 +20,11 @@ class InMemoryEventStore(object):
             raise AggregateNotFoundError()
 
     def _verify_version(self, aggregate_id, provided_version):
-        if provided_version != self._current_version_of(aggregate_id) + 1:
+        if provided_version != self._next_version_of(aggregate_id):
             raise ConcurrencyError()
 
-    def _current_version_of(self, aggregate_id):
-        return self.events.get(aggregate_id)[-1].get('version')
+    def _next_version_of(self, aggregate_id):
+        return self.events.get(aggregate_id)[-1].get('version') + 1
 
 
 class AggregateNotFoundError(RuntimeError):
