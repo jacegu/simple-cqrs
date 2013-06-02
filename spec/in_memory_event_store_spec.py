@@ -5,9 +5,14 @@ from spec.constants import *
 
 
 class InMemoryEventStore(object):
-    def save(self, aggregate_id, events, version):
-        raise NotImplementedError()
+    def __init__(self):
+        self.events = {}
 
+    def save(self, aggregate_id, events, version):
+        self.events[aggregate_id] = events
+
+    def get_events_for_aggregate(self, aggregate_id):
+        return self.events[aggregate_id]
 
 with describe(InMemoryEventStore) as _:
 
