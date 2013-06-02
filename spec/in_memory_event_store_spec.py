@@ -43,8 +43,10 @@ with describe(InMemoryEventStore) as _:
     with describe('saving events'):
         with context('when the provided version matches the expected one'):
             def it_saves_the_event():
-                _.event_store.push(AGGREGATE_ID, IRRELEVANT_EVENT, 0)
-                expect(_.event_store.get_events_for_aggregate(AGGREGATE_ID)).to.be.equal(IRRELEVANT_EVENT)
+                _.event_store.push(AGGREGATE_ID, IRRELEVANT_EVENT1, 0)
+                _.event_store.push(AGGREGATE_ID, IRRELEVANT_EVENT2, 1)
+                expect(_.event_store.get_events_for_aggregate(AGGREGATE_ID)). \
+                  to.be.equal([IRRELEVANT_EVENT1, IRRELEVANT_EVENT2])
 
             @skip
             def it_publishes_the_event():
