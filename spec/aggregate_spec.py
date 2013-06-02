@@ -36,3 +36,8 @@ with describe('an example Aggregate') as _:
         def holds_every_applied_change():
             _.aggregate.change_name(OTHER_NAME)
             expect(_.aggregate.uncommitted_changes).to.have.length_of(1)
+
+        def gets_empty_once_changes_are_committed():
+            _.aggregate.change_name(OTHER_NAME)
+            _.aggregate.changes_committed()
+            expect(_.aggregate.uncommitted_changes).to.be.empty
