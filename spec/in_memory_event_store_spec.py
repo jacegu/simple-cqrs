@@ -42,10 +42,9 @@ with describe(InMemoryEventStore) as _:
 
     with describe('saving events'):
         with context('when the provided version matches the expected one'):
-            @skip
             def it_saves_the_event():
                 _.event_store.push(AGGREGATE_ID, IRRELEVANT_EVENT, 0)
-                expect(_.event_store.get_events_for_aggregate(AGGREGATE_ID)).to.be.equal([IRRELEVANT_EVENT])
+                expect(_.event_store.get_events_for_aggregate(AGGREGATE_ID)).to.be.equal(IRRELEVANT_EVENT)
 
             @skip
             def it_publishes_the_event():
