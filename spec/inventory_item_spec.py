@@ -61,3 +61,9 @@ with describe(InventoryItem) as _:
         def it_cannot_remove_less_than_one_item():
             expect(_.item.remove).when.called_with(0).to.throw(InvalidOperationError)
             expect(_.item.remove).when.called_with(-1).to.throw(InvalidOperationError)
+
+    with context('behaving like an aggregate'):
+        def it_stores_its_uncommitted_changes():
+            expect(_.item.uncommitted_changes).to.be.empty()
+            _.item.deactivate()
+            expect(_.item.uncommitted_changes).to.have.length_of(1)
