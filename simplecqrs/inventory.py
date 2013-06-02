@@ -1,6 +1,8 @@
-print(__name__)
-class InventoryItem(object):
+from simplecqrs.aggregate import Aggregate
+
+class InventoryItem(Aggregate):
     def __init__(self, id, name):
+        Aggregate.__init__(self)
         self.__applyChanges(InventoryItemCreated(id, name))
 
     def rename(self, new_name):
@@ -11,7 +13,9 @@ class InventoryItem(object):
     def deactivate(self):
         if self.is_inactive:
             raise InvalidOperationError("Cannot deactivate an inactive inventory item")
-        self.__applyChanges(InventoryItemDeactivated())
+        change = InventoryItemDeactivated()
+        self.__applyChanges(change)
+        self.uncommitted_changes.append(change)
 
     @property
     def is_active(self):

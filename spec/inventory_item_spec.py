@@ -64,6 +64,6 @@ with describe(InventoryItem) as _:
 
     with context('behaving like an aggregate'):
         def it_stores_its_uncommitted_changes():
-            expect(_.item.uncommitted_changes).to.be.empty()
+            expect(_.item.uncommitted_changes).to.be.empty
             _.item.deactivate()
             expect(_.item.uncommitted_changes).to.have.length_of(1)
