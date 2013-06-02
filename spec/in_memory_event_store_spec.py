@@ -1,4 +1,4 @@
-from mamba import describe, context, skip
+from mamba import describe, context, before, skip
 from sure import expect
 
 from spec.constants import *
@@ -16,10 +16,13 @@ class InMemoryEventStore(object):
 
 with describe(InMemoryEventStore) as _:
 
+    @before.each
+    def create_event_store():
+        _.event_store = InMemoryEventStore()
+
     with describe('getting events for an aggregate'):
         with context('when the aggregate is found'):
             def it_returns_the_aggregates_events():
-                _.event_store = InMemoryEventStore()
                 aggregate_id = IRRELEVANT_ID
                 _.event_store.save(aggregate_id, IRRELEVANT_EVENT, IRRELEVANT_VERSION)
                 expect(_.event_store.get_events_for_aggregate(aggregate_id)).to.be.equal(IRRELEVANT_EVENT)
