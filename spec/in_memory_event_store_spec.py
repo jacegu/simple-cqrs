@@ -14,6 +14,11 @@ class InMemoryEventStore(object):
     def get_events_for_aggregate(self, aggregate_id):
         return self.events[aggregate_id]
 
+
+class AggregateNotFoundError(RuntimeError):
+    pass
+
+
 with describe(InMemoryEventStore) as _:
 
     @before.each
@@ -28,8 +33,8 @@ with describe(InMemoryEventStore) as _:
                 expect(_.event_store.get_events_for_aggregate(aggregate_id)).to.be.equal(IRRELEVANT_EVENT)
 
         with context('when no aggregate with provided id is found'):
-            @skip
             def it_raises_an_aggregate_not_found_exception():
-                pass
+                expect(_.event_store.get_events_for_aggregate). \
+                  when.called_with(IRRELEVANT_ID).to.throw(AggregateNotFoundError)
 
 
