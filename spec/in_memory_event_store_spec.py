@@ -54,7 +54,7 @@ with describe(InMemoryEventStore) as _:
             def it_raises_a_concurrency_error():
                 _.event_store.push(AGGREGATE_ID, IRRELEVANT_EVENT, 0)
                 expect(_.event_store.push).when. \
-                  called_with(AGGREGATE_ID, IRRELEVANT_EVENT, 1).to.throw(ConcurrencyError)
+                  called_with(AGGREGATE_ID, IRRELEVANT_EVENT, 0).to.throw(ConcurrencyError)
 
     with describe('getting events for an aggregate'):
         with context('when the aggregate is found'):
