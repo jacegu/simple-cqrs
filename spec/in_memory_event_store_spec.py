@@ -8,7 +8,7 @@ class InMemoryEventStore(object):
     def __init__(self):
         self.events = {}
 
-    def save(self, aggregate_id, events, version):
+    def push(self, aggregate_id, events, version):
         self.events[aggregate_id] = events
 
     def get_events_for_aggregate(self, aggregate_id):
@@ -19,6 +19,9 @@ class InMemoryEventStore(object):
 
 
 class AggregateNotFoundError(RuntimeError):
+    pass
+
+class ConcurrencyError(RuntimeError):
     pass
 
 
@@ -41,15 +44,17 @@ with describe(InMemoryEventStore) as _:
                 pass
 
         with context('when the provided version is different from the expected one'):
-            @skip
             def it_raises_a_concurrency_error():
-                pass
+                aggregate_id = IRRELEVANT_ID
+                _.event_store.push(aggregate_id, IRRELEVANT_EVENT, 0)
+                expect(_.event_store.push).when. \
+                  called_with(aggregate_id, IRRELEVANT_EVENT, 1).to.throw(ConcurrencyError)
 
     with describe('getting events for an aggregate'):
         with context('when the aggregate is found'):
             def it_returns_the_aggregates_events():
                 aggregate_id = IRRELEVANT_ID
-                _.event_store.save(aggregate_id, IRRELEVANT_EVENT, IRRELEVANT_VERSION)
+                _.event_store.push(aggregate_id, IRRELEVANT_EVENT, IRRELEVANT_VERSION)
                 expect(_.event_store.get_events_for_aggregate(aggregate_id)).to.be.equal(IRRELEVANT_EVENT)
 
         with context('when no aggregate with provided id is found'):
