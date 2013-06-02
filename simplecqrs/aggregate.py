@@ -7,7 +7,7 @@ class Aggregate(object):
         raise NotImplementedError()
 
     def changes_committed(self):
-        raise NotImplementedError()
+        self.uncommitted_changes = []
 
     def _apply_changes(self, event):
         self.uncommitted_changes.append(event)
