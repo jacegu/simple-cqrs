@@ -12,7 +12,10 @@ class InMemoryEventStore(object):
         self.events[aggregate_id] = events
 
     def get_events_for_aggregate(self, aggregate_id):
-        return self.events[aggregate_id]
+        if aggregate_id in self.events:
+            return self.events[aggregate_id]
+        else:
+            raise AggregateNotFoundError()
 
 
 class AggregateNotFoundError(RuntimeError):
@@ -36,5 +39,3 @@ with describe(InMemoryEventStore) as _:
             def it_raises_an_aggregate_not_found_exception():
                 expect(_.event_store.get_events_for_aggregate). \
                   when.called_with(IRRELEVANT_ID).to.throw(AggregateNotFoundError)
-
-
