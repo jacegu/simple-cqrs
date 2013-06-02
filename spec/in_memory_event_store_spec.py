@@ -28,6 +28,23 @@ with describe(InMemoryEventStore) as _:
     def create_event_store():
         _.event_store = InMemoryEventStore()
 
+    with describe('saving events'):
+        with context('when the provided version matches the expected one'):
+            @skip
+            def it_saves_the_event():
+                aggregate_id, aggregate_version = IRRELEVANT_ID, 0
+                _.event_store.push(aggregate_id, IRRELEVANT_EVENT, aggregate_version)
+                expect(_.event_store.get_events_for_aggregate(aggregate_id)).to.be.equal([IRRELEVANT_EVENT])
+
+            @skip
+            def it_publishes_the_event():
+                pass
+
+        with context('when the provided version is different from the expected one'):
+            @skip
+            def it_raises_a_concurrency_error():
+                pass
+
     with describe('getting events for an aggregate'):
         with context('when the aggregate is found'):
             def it_returns_the_aggregates_events():
