@@ -8,11 +8,13 @@ IRRELEVANT_CHANGE2 = 'irrelevant change 2'
 CHANGES = [IRRELEVANT_CHANGE1, IRRELEVANT_CHANGE2]
 
 class Aggregate(object):
-    def from_events():
-        raise NotImplementedError
+
+    @classmethod
+    def from_events(cls):
+        raise NotImplementedError()
 
     def changes_committed(self):
-        raise NotImplementedError
+        raise NotImplementedError()
 
 
 class Repository(object):
