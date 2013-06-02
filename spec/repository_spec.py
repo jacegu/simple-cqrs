@@ -3,20 +3,13 @@ from doublex import *
 from sure import expect
 
 from simplecqrs.persistence import Repository
+from simplecqrs.aggregate import Aggregate
+
 
 IRRELEVANT_ID = 'irrelevant id'
 IRRELEVANT_CHANGE1 = 'irrelevant change 1'
 IRRELEVANT_CHANGE2 = 'irrelevant change 2'
 CHANGES = [IRRELEVANT_CHANGE1, IRRELEVANT_CHANGE2]
-
-class Aggregate(object):
-
-    @classmethod
-    def from_events(cls):
-        raise NotImplementedError()
-
-    def changes_committed(self):
-        raise NotImplementedError()
 
 
 with describe(Repository) as _:
