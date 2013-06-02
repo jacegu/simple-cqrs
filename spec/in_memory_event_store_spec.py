@@ -8,15 +8,19 @@ class InMemoryEventStore(object):
     def __init__(self):
         self.events = {}
 
-    def push(self, aggregate_id, events, version):
-        self.events[aggregate_id] = events
+    def push(self, aggregate_id, event, version):
+        if aggregate_id in self.events:
+            expected_version = self.events[aggregate_id]['version']
+            if version != expected_version:
+                raise ConcurrencyError()
+
+        self.events[aggregate_id] = {'event': event, 'version': version}
 
     def get_events_for_aggregate(self, aggregate_id):
         if aggregate_id in self.events:
-            return self.events[aggregate_id]
+            return self.events[aggregate_id]['event']
         else:
             raise AggregateNotFoundError()
-
 
 class AggregateNotFoundError(RuntimeError):
     pass
