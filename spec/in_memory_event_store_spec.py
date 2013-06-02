@@ -44,9 +44,8 @@ with describe(InMemoryEventStore) as _:
         with context('when the provided version matches the expected one'):
             @skip
             def it_saves_the_event():
-                aggregate_id, aggregate_version = IRRELEVANT_ID, 0
-                _.event_store.push(aggregate_id, IRRELEVANT_EVENT, aggregate_version)
-                expect(_.event_store.get_events_for_aggregate(aggregate_id)).to.be.equal([IRRELEVANT_EVENT])
+                _.event_store.push(AGGREGATE_ID, IRRELEVANT_EVENT, 0)
+                expect(_.event_store.get_events_for_aggregate(AGGREGATE_ID)).to.be.equal([IRRELEVANT_EVENT])
 
             @skip
             def it_publishes_the_event():
@@ -54,17 +53,15 @@ with describe(InMemoryEventStore) as _:
 
         with context('when the provided version is different from the expected one'):
             def it_raises_a_concurrency_error():
-                aggregate_id = IRRELEVANT_ID
-                _.event_store.push(aggregate_id, IRRELEVANT_EVENT, 0)
+                _.event_store.push(AGGREGATE_ID, IRRELEVANT_EVENT, 0)
                 expect(_.event_store.push).when. \
-                  called_with(aggregate_id, IRRELEVANT_EVENT, 1).to.throw(ConcurrencyError)
+                  called_with(AGGREGATE_ID, IRRELEVANT_EVENT, 1).to.throw(ConcurrencyError)
 
     with describe('getting events for an aggregate'):
         with context('when the aggregate is found'):
             def it_returns_the_aggregates_events():
-                aggregate_id = IRRELEVANT_ID
-                _.event_store.push(aggregate_id, IRRELEVANT_EVENT, IRRELEVANT_VERSION)
-                expect(_.event_store.get_events_for_aggregate(aggregate_id)).to.be.equal(IRRELEVANT_EVENT)
+                _.event_store.push(AGGREGATE_ID, IRRELEVANT_EVENT, IRRELEVANT_VERSION)
+                expect(_.event_store.get_events_for_aggregate(AGGREGATE_ID)).to.be.equal(IRRELEVANT_EVENT)
 
         with context('when no aggregate with provided id is found'):
             def it_raises_an_aggregate_not_found_exception():
