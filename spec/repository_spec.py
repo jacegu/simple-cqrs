@@ -2,15 +2,12 @@ from mamba import describe, context, before
 from doublex import *
 from sure import expect
 
+from spec.constants import *
+
 from simplecqrs.persistence import Repository
 from simplecqrs.aggregate import Aggregate
 
-
-IRRELEVANT_ID = 'irrelevant id'
-IRRELEVANT_CHANGE1 = 'irrelevant change 1'
-IRRELEVANT_CHANGE2 = 'irrelevant change 2'
 CHANGES = [IRRELEVANT_CHANGE1, IRRELEVANT_CHANGE2]
-
 
 with describe(Repository) as _:
 

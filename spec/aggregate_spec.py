@@ -1,10 +1,10 @@
 from mamba import describe, before, context
 from sure import expect
 
+from spec.constants import *
+
 from simplecqrs.aggregate import Aggregate
 
-IRRELEVANT_NAME = 'irrelevant name'
-OTHER_NAME = 'other name'
 
 class DummyAggregate(Aggregate):
     def __init__(self):

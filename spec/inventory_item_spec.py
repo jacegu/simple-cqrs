@@ -1,11 +1,9 @@
 from mamba import describe, before, context
 from sure import expect
 
-from simplecqrs.inventory import InventoryItem, InvalidOperationError
+from spec.constants import *
 
-IRRELEVANT_ID = 'id'
-IRRELEVANT_NAME = 'irrelevant name'
-OTHER_NAME = 'other name'
+from simplecqrs.inventory import InventoryItem, InvalidOperationError
 
 with describe(InventoryItem) as _:
 
