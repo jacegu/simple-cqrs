@@ -11,7 +11,7 @@ class InMemoryEventStore(object):
     def push(self, aggregate_id, event, version):
         if aggregate_id in self.events:
             self._verify_version(aggregate_id, version)
-        self.events.setdefault(aggregate_id, []).append({'event': event, 'version': version})
+        self._store(aggregate_id, event, version)
 
     def get_events_for_aggregate(self, aggregate_id):
         if aggregate_id in self.events:
@@ -25,6 +25,9 @@ class InMemoryEventStore(object):
 
     def _next_version_of(self, aggregate_id):
         return self.events.get(aggregate_id)[-1].get('version') + 1
+
+    def _store(self, aggregate_id, event, version):
+        self.events.setdefault(aggregate_id, []).append({'event': event, 'version': version})
 
 
 class AggregateNotFoundError(RuntimeError):
