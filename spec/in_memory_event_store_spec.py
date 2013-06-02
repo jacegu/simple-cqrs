@@ -11,20 +11,20 @@ class InMemoryEventStore(object):
     def push(self, aggregate_id, event, version):
         if aggregate_id in self.events:
             self._verify_version(aggregate_id, version)
-        self.events[aggregate_id] = {'event': event, 'version': version}
+        self.events.setdefault(aggregate_id, []).append({'event': event, 'version': version})
 
     def get_events_for_aggregate(self, aggregate_id):
         if aggregate_id in self.events:
-            return self.events[aggregate_id]['event']
+            return [event_data['event'] for event_data in self.events[aggregate_id]]
         else:
             raise AggregateNotFoundError()
 
     def _verify_version(self, aggregate_id, provided_version):
-        if provided_version != self._current_version_of(aggregate_id):
+        if provided_version != self._current_version_of(aggregate_id) + 1:
             raise ConcurrencyError()
 
     def _current_version_of(self, aggregate_id):
-        return self.events.get('version')
+        return self.events.get(aggregate_id)[-1].get('version')
 
 
 class AggregateNotFoundError(RuntimeError):
@@ -62,7 +62,7 @@ with describe(InMemoryEventStore) as _:
         with context('when the aggregate is found'):
             def it_returns_the_aggregates_events():
                 _.event_store.push(AGGREGATE_ID, IRRELEVANT_EVENT, IRRELEVANT_VERSION)
-                expect(_.event_store.get_events_for_aggregate(AGGREGATE_ID)).to.be.equal(IRRELEVANT_EVENT)
+                expect(_.event_store.get_events_for_aggregate(AGGREGATE_ID)).to.be.equal([IRRELEVANT_EVENT])
 
         with context('when no aggregate with provided id is found'):
             def it_raises_an_aggregate_not_found_exception():
