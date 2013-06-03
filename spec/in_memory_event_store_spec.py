@@ -1,5 +1,6 @@
 from mamba import describe, context, before, skip
 from sure import expect
+from doublex import *
 
 from spec.constants import *
 
@@ -9,15 +10,18 @@ class InMemoryEventStore(object):
         self.events = {}
 
     def push(self, aggregate_id, event, version):
-        if aggregate_id in self.events:
+        if self._there_are_events_for(aggregate_id):
             self._verify_version(aggregate_id, version)
         self._store(aggregate_id, event, version)
 
     def get_events_for_aggregate(self, aggregate_id):
-        if aggregate_id in self.events:
+        if self._there_are_events_for(aggregate_id):
             return [event_data['event'] for event_data in self.events[aggregate_id]]
         else:
             raise AggregateNotFoundError()
+
+    def _there_are_events_for(self, aggregate_id):
+        return aggregate_id in self.events
 
     def _verify_version(self, aggregate_id, provided_version):
         if provided_version != self._next_version_of(aggregate_id):
@@ -41,6 +45,7 @@ with describe(InMemoryEventStore) as _:
 
     @before.each
     def create_event_store():
+        _.publisher = Spy()
         _.event_store = InMemoryEventStore()
 
     with describe('saving events'):
@@ -51,9 +56,9 @@ with describe(InMemoryEventStore) as _:
                 expect(_.event_store.get_events_for_aggregate(AGGREGATE_ID)). \
                   to.be.equal([IRRELEVANT_EVENT1, IRRELEVANT_EVENT2])
 
-            @skip
             def it_publishes_the_event():
-                pass
+                _.event_store.push(AGGREGATE_ID, IRRELEVANT_EVENT1, 0)
+                assert_that(_.publisher.publish, called().with_args(IRRELEVANT_EVENT1))
 
         with context('when the provided version is different from the expected one'):
             def it_raises_a_concurrency_error():
