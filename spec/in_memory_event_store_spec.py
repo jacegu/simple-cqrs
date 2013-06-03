@@ -6,13 +6,15 @@ from spec.constants import *
 
 
 class InMemoryEventStore(object):
-    def __init__(self):
+    def __init__(self, publisher):
+        self.publisher = publisher
         self.events = {}
 
     def push(self, aggregate_id, event, version):
         if self._there_are_events_for(aggregate_id):
             self._verify_version(aggregate_id, version)
         self._store(aggregate_id, event, version)
+        self.publisher.publish(event)
 
     def get_events_for_aggregate(self, aggregate_id):
         if self._there_are_events_for(aggregate_id):
@@ -46,7 +48,7 @@ with describe(InMemoryEventStore) as _:
     @before.each
     def create_event_store():
         _.publisher = Spy()
-        _.event_store = InMemoryEventStore()
+        _.event_store = InMemoryEventStore(_.publisher)
 
     with describe('saving events'):
         with context('when the provided version matches the expected one'):
