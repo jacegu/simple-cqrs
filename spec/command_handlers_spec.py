@@ -38,7 +38,7 @@ with describe('InventoryCommandsHandler') as _:
 
     def it_can_handle_rename_inventory_item_commands():
         item = Spy(InventoryItem)
-        with _.repository as repository: repository.find_by_id(IRRELEVANT_ID).returns(item)
+        with _.repository as r: r.find_by_id(IRRELEVANT_ID).returns(item)
 
         _.handler.handle(RenameInventoryItem(IRRELEVANT_ID, IRRELEVANT_NAME, IRRELEVANT_VERSION))
 
