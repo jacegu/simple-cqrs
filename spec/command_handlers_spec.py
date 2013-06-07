@@ -56,6 +56,12 @@ with describe('InventoryCommandsHandler') as _:
         assert_that(item.deactivate, called())
         assert_that(_.repository.save, called().with_args(item, IRRELEVANT_VERSION))
 
+    def it_can_handle_check_in_items_to_inventory_commands():
+        item = _stubbed_item()
+        _.handler.handle(CheckInItemsToInventory(IRRELEVANT_ID, IRRELEVANT_COUNT, IRRELEVANT_VERSION))
+        assert_that(item.check_in, called().with_args(IRRELEVANT_COUNT))
+        assert_that(_.repository.save, called().with_args(item, IRRELEVANT_VERSION))
+
     def _stubbed_item():
         item = Spy(InventoryItem)
         with _.repository as r: r.find_by_id(IRRELEVANT_ID).returns(item)
