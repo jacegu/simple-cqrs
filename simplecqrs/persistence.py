@@ -1,9 +1,12 @@
+
 class Repository(object):
+    FIRST_VERSION = -1
+
     def __init__(self, klass, storage):
         self.klass = klass
         self.storage = storage
 
-    def save(self, aggregate, version = -1):
+    def save(self, aggregate, version = FIRST_VERSION):
         for change in aggregate.uncommitted_changes:
             self.storage.push(aggregate.id, change)
         aggregate.changes_committed()
