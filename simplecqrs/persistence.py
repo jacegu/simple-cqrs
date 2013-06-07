@@ -51,5 +51,3 @@ class AggregateNotFoundError(RuntimeError):
 
 class ConcurrencyError(RuntimeError):
     pass
-
-
