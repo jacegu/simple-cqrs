@@ -63,12 +63,15 @@ with describe('InventoryCommandsHandler') as _:
             _.handler.handle(CheckInItemsToInventory(IRRELEVANT_ID, IRRELEVANT_COUNT, IRRELEVANT_VERSION))
             assert_that(item.check_in, called().with_args(IRRELEVANT_COUNT))
 
+    def it_can_handle_remove_items_from_inventory_commands():
+        with _stubbed_item() as item:
+            _.handler.handle(RemoveItemsFromInventory(IRRELEVANT_ID, IRRELEVANT_COUNT, IRRELEVANT_VERSION))
+            assert_that(item.remove, called().with_args(IRRELEVANT_COUNT))
+
     @contextmanager
     def _stubbed_item():
         item = Spy(InventoryItem)
         with _.repository as r: r.find_by_id(IRRELEVANT_ID).returns(item)
         yield item
         assert_that(_.repository.save, called().with_args(item, IRRELEVANT_VERSION))
-
-
 
