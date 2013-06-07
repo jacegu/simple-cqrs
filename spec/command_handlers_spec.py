@@ -30,3 +30,12 @@ with describe('InventoryCommandsHandler') as _:
         _.handler.handle(command)
         assert_that(_.repository.save, called().with_args(instance_of(InventoryItem)))
 
+    def it_can_handle_rename_inventory_item_commands():
+        item = Spy(InventoryItem)
+        with _.repository as repository: repository.find_by_id(IRRELEVANT_ID).returns(item)
+        command = RenameInventoryItem(IRRELEVANT_ID, IRRELEVANT_NAME, IRRELEVANT_VERSION)
+
+        _.handler.handle(command)
+
+        assert_that(item.rename, called().with_args(IRRELEVANT_NAME))
+        assert_that(_.repository.save, called().with_args(item, IRRELEVANT_VERSION))
