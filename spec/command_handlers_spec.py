@@ -44,3 +44,14 @@ with describe('InventoryCommandsHandler') as _:
 
         assert_that(item.rename, called().with_args(IRRELEVANT_NAME))
         assert_that(_.repository.save, called().with_args(item, IRRELEVANT_VERSION))
+
+    def it_can_handle_deactivate_inventory_item_commands():
+        item = Spy(InventoryItem)
+        with _.repository as r: r.find_by_id(IRRELEVANT_ID).returns(item)
+
+        _.handler.handle(DeactivateInventoryItem(IRRELEVANT_ID, IRRELEVANT_VERSION))
+
+        assert_that(item.deactivate, called())
+        assert_that(_.repository.save, called().with_args(item, IRRELEVANT_VERSION))
+
+
