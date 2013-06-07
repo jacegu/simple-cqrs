@@ -15,21 +15,21 @@ class InventoryCommandsHandler(object):
         self.inventory_item_repository = inventory_item_repository
 
     def handle(self, command):
+        #FIXME: Replace conditional with polymorphism of some kind.
+        #       Probably the best choice is to create individual handlers for each command type.
+        #       Pushing the handle command to each class is another possibility. The handle
+        #       method would receive the repository as a parameter. I am not sure about it though.
         if command.__class__ == CreateInventoryItem:
             self.inventory_item_repository.save(InventoryItem(command.item_id, command.item_name))
-
         if command.__class__ == RenameInventoryItem:
             with self._inventory_item(command.item_id, command.original_version) as item:
                 item.rename(command.new_item_name)
-
         if command.__class__ == DeactivateInventoryItem:
             with self._inventory_item(command.item_id, command.original_version) as item:
                 item.deactivate()
-
         if command.__class__ == CheckInItemsToInventory:
             with self._inventory_item(command.item_id, command.original_version) as item:
                 item.check_in(command.item_count)
-
         if command.__class__ == RemoveItemsFromInventory:
             with self._inventory_item(command.item_id, command.original_version) as item:
                 item.remove(command.item_count)
@@ -79,4 +79,3 @@ with describe('InventoryCommandsHandler') as _:
         with _.repository as r: r.find_by_id(IRRELEVANT_ID).returns(item)
         yield item
         assert_that(_.repository.save, called().with_args(item, IRRELEVANT_VERSION))
-
