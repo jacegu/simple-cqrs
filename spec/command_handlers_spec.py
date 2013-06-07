@@ -30,8 +30,6 @@ class InventoryCommandsHandler(object):
             with self._inventory_item(command.item_id, command.original_version) as item:
                 item.check_in(command.item_count)
 
-
-
     @contextmanager
     def _inventory_item(self, item_id, item_version):
         item = self.inventory_item_repository.find_by_id(item_id)
@@ -51,25 +49,26 @@ with describe('InventoryCommandsHandler') as _:
         assert_that(_.repository.save, called().with_args(instance_of(InventoryItem)))
 
     def it_can_handle_rename_inventory_item_commands():
-        item = _stubbed_item()
-        _.handler.handle(RenameInventoryItem(IRRELEVANT_ID, IRRELEVANT_NAME, IRRELEVANT_VERSION))
-        assert_that(item.rename, called().with_args(IRRELEVANT_NAME))
-        assert_that(_.repository.save, called().with_args(item, IRRELEVANT_VERSION))
+        with _stubbed_item() as item:
+            _.handler.handle(RenameInventoryItem(IRRELEVANT_ID, IRRELEVANT_NAME, IRRELEVANT_VERSION))
+            assert_that(item.rename, called().with_args(IRRELEVANT_NAME))
 
     def it_can_handle_deactivate_inventory_item_commands():
-        item = _stubbed_item()
-        _.handler.handle(DeactivateInventoryItem(IRRELEVANT_ID, IRRELEVANT_VERSION))
-        assert_that(item.deactivate, called())
-        assert_that(_.repository.save, called().with_args(item, IRRELEVANT_VERSION))
+        with _stubbed_item() as item:
+            _.handler.handle(DeactivateInventoryItem(IRRELEVANT_ID, IRRELEVANT_VERSION))
+            assert_that(item.deactivate, called())
 
     def it_can_handle_check_in_items_to_inventory_commands():
-        item = _stubbed_item()
-        _.handler.handle(CheckInItemsToInventory(IRRELEVANT_ID, IRRELEVANT_COUNT, IRRELEVANT_VERSION))
-        assert_that(item.check_in, called().with_args(IRRELEVANT_COUNT))
-        assert_that(_.repository.save, called().with_args(item, IRRELEVANT_VERSION))
+        with _stubbed_item() as item:
+            _.handler.handle(CheckInItemsToInventory(IRRELEVANT_ID, IRRELEVANT_COUNT, IRRELEVANT_VERSION))
+            assert_that(item.check_in, called().with_args(IRRELEVANT_COUNT))
 
+    @contextmanager
     def _stubbed_item():
         item = Spy(InventoryItem)
         with _.repository as r: r.find_by_id(IRRELEVANT_ID).returns(item)
-        return item
+        yield item
+        assert_that(_.repository.save, called().with_args(item, IRRELEVANT_VERSION))
+
+
 
