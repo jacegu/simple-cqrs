@@ -23,6 +23,13 @@ class InventoryCommandsHandler(object):
             item.rename(command.new_item_name)
             self.inventory_item_repository.save(item, command.original_version)
 
+        if command.__class__ == DeactivateInventoryItem:
+            item = self.inventory_item_repository.find_by_id(command.item_id)
+            item.deactivate()
+            self.inventory_item_repository.save(item, command.original_version)
+
+
+
 
 with describe('InventoryCommandsHandler') as _:
 
