@@ -26,6 +26,12 @@ class InventoryCommandsHandler(object):
             with self._inventory_item(command.item_id, command.original_version) as item:
                 item.deactivate()
 
+        if command.__class__ == CheckInItemsToInventory:
+            with self._inventory_item(command.item_id, command.original_version) as item:
+                item.check_in(command.item_count)
+
+
+
     @contextmanager
     def _inventory_item(self, item_id, item_version):
         item = self.inventory_item_repository.find_by_id(item_id)
