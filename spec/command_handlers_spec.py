@@ -15,7 +15,13 @@ class InventoryCommandsHandler(object):
         self.inventory_item_repository = inventory_item_repository
 
     def handle(self, command):
-        self.inventory_item_repository.save(InventoryItem(command.item_id, command.item_name))
+        if command.__class__ == CreateInventoryItem:
+            self.inventory_item_repository.save(InventoryItem(command.item_id, command.item_name))
+
+        if command.__class__ == RenameInventoryItem:
+            item = self.inventory_item_repository.find_by_id(command.item_id)
+            item.rename(command.new_item_name)
+            self.inventory_item_repository.save(item, command.original_version)
 
 
 with describe('InventoryCommandsHandler') as _:
