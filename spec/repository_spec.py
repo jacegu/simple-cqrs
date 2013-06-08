@@ -31,6 +31,13 @@ with describe(Repository) as _:
             assert_that(_.storage.push, called(). \
              with_args(IRRELEVANT_ID, IRRELEVANT_CHANGE2, IRRELEVANT_VERSION))
 
+        def it_saves_the_first_version_of_an_aggregate():
+            _.repository.save(_.aggregate)
+            assert_that(_.storage.push, called(). \
+             with_args(IRRELEVANT_ID, IRRELEVANT_CHANGE1, Repository.FIRST_VERSION))
+            assert_that(_.storage.push, called(). \
+             with_args(IRRELEVANT_ID, IRRELEVANT_CHANGE2, Repository.FIRST_VERSION))
+
         def it_marks_the_changes_as_committed():
             _.repository.save(_.aggregate)
             assert_that(_.aggregate.changes_committed, called())

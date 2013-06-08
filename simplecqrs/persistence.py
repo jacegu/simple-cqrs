@@ -6,7 +6,7 @@ class Repository(object):
         self.klass = klass
         self.storage = storage
 
-    def save(self, aggregate, version = FIRST_VERSION):
+    def save(self, aggregate, version = -2):
         for change in aggregate.uncommitted_changes:
             self.storage.push(aggregate.id, change, version)
         aggregate.changes_committed()
