@@ -8,7 +8,7 @@ class Repository(object):
 
     def save(self, aggregate, version = FIRST_VERSION):
         for change in aggregate.uncommitted_changes:
-            self.storage.push(aggregate.id, change)
+            self.storage.push(aggregate.id, change, version)
         aggregate.changes_committed()
 
     def find_by_id(self, id):
