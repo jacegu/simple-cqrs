@@ -1,1 +1,2 @@
-- Repository should take the version onto account (right now its ignoring it)
+- Write FakeBus
+- Write ReadModel
