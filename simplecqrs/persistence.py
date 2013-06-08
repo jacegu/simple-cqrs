@@ -40,8 +40,6 @@ class InMemoryEventStore(object):
         return aggregate_id in self.events
 
     def _verify_version(self, aggregate_id, provided_version):
-        print provided_version
-        print self._next_version_of(aggregate_id)
         if provided_version != self._next_version_of(aggregate_id):
             raise ConcurrencyError()
 
@@ -49,7 +47,6 @@ class InMemoryEventStore(object):
         return self.events.get(aggregate_id)[-1].get('version') + 1
 
     def _store(self, aggregate_id, event, version):
-        print version
         self.events.setdefault(aggregate_id, []).append({'event': event, 'version': version})
 
 
