@@ -4,7 +4,9 @@ class Aggregate(object):
 
     @classmethod
     def from_events(cls, events):
-        pass
+        aggregate = cls()
+        for event in events: event.apply_changes(aggregate)
+        return aggregate
 
     def changes_committed(self):
         self.uncommitted_changes = []
