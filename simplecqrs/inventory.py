@@ -1,7 +1,7 @@
 from simplecqrs.aggregate import Aggregate
 
 class InventoryItem(Aggregate):
-    def __init__(self, id, name):
+    def __init__(self, id = None, name = ''):
         Aggregate.__init__(self)
         self._apply_changes(InventoryItemCreated(id, name))
 
