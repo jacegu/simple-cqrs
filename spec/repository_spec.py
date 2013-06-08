@@ -25,18 +25,19 @@ with describe(Repository) as _:
 
     with context('saving an aggregate'):
         def it_saves_all_uncommited_changes():
-            _.repository.save(_.aggregate, IRRELEVANT_VERSION)
+            version = 1
+            _.repository.save(_.aggregate, version)
             assert_that(_.storage.push, called(). \
-             with_args(IRRELEVANT_ID, IRRELEVANT_CHANGE1, IRRELEVANT_VERSION))
+             with_args(IRRELEVANT_ID, IRRELEVANT_CHANGE1, version))
             assert_that(_.storage.push, called(). \
-             with_args(IRRELEVANT_ID, IRRELEVANT_CHANGE2, IRRELEVANT_VERSION))
+             with_args(IRRELEVANT_ID, IRRELEVANT_CHANGE2, version + 1))
 
         def it_saves_the_first_version_of_an_aggregate():
             _.repository.save(_.aggregate)
             assert_that(_.storage.push, called(). \
              with_args(IRRELEVANT_ID, IRRELEVANT_CHANGE1, Repository.FIRST_VERSION))
             assert_that(_.storage.push, called(). \
-             with_args(IRRELEVANT_ID, IRRELEVANT_CHANGE2, Repository.FIRST_VERSION))
+             with_args(IRRELEVANT_ID, IRRELEVANT_CHANGE2, Repository.FIRST_VERSION + 1))
 
         def it_marks_the_changes_as_committed():
             _.repository.save(_.aggregate)
