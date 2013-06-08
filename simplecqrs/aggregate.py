@@ -3,8 +3,8 @@ class Aggregate(object):
         self.uncommitted_changes = []
 
     @classmethod
-    def from_events(cls):
-        raise NotImplementedError()
+    def from_events(cls, events):
+        pass
 
     def changes_committed(self):
         self.uncommitted_changes = []
