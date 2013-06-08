@@ -11,6 +11,9 @@ with describe(InventoryItem) as _:
     def create_an_item():
         _.item = InventoryItem(IRRELEVANT_ID, IRRELEVANT_NAME)
 
+    def it_can_be_created_with_an_empty_constructor():
+        expect(InventoryItem()).to.be.an('InventoryItem')
+
     def it_has_an_id():
         expect(_.item.id).to.be.equal(IRRELEVANT_ID)
 
