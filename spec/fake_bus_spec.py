@@ -9,10 +9,10 @@ class FakeBus(object):
     def __init__(self):
         self.routes = {}
 
-    def register_handler(self, message, handler):
-        if not message in self.routes:
-            self.routes[message] = []
-        self.routes[message].append(handler)
+    def register_handler(self, event_or_command, handler):
+        if not event_or_command in self.routes:
+            self.routes[event_or_command] = []
+        self.routes[event_or_command].append(handler)
 
 
 
