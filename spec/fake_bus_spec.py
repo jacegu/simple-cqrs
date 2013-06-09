@@ -49,9 +49,11 @@ with describe('FakeBus') as _:
             _.bus.send(command)
             assert_that(handler.handle, called().with_args(command))
 
-        @skip
         def it_raises_an_error_if_the_command_has_more_than_one_handler():
-            pass
+            command = DummyCommand()
+            _.bus.register_handler(DummyCommand, IRRELEVANT_HANDLER1)
+            _.bus.register_handler(DummyCommand, IRRELEVANT_HANDLER2)
+            expect(_.bus.send).when.called_with(command).to.throw(InvalidOperationError)
 
         @skip
         def it_raises_an_error_if_no_handler_for_command_is_found():
