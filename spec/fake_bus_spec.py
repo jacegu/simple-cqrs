@@ -22,9 +22,15 @@ with describe('FakeBus') as _:
 
     with context('registering handlers'):
         def it_registers_the_first_handler_for_a_command_or_event():
-            _.bus.register_handler(IRRELEVANT_EVENT_TYPE, IRRELEVANT_HANDLER)
+            _.bus.register_handler(IRRELEVANT_EVENT_TYPE, IRRELEVANT_HANDLER1)
             expect(_.bus.routes).to.have.key(IRRELEVANT_EVENT_TYPE)
-            expect(_.bus.routes.get(IRRELEVANT_EVENT_TYPE)).to.be.equal([IRRELEVANT_HANDLER])
+            expect(_.bus.routes.get(IRRELEVANT_EVENT_TYPE)).to.be.equal([IRRELEVANT_HANDLER1])
+
+        def it_registers_more_than_one_handler_per_command_or_event():
+            _.bus.register_handler(IRRELEVANT_EVENT_TYPE, IRRELEVANT_HANDLER1)
+            _.bus.register_handler(IRRELEVANT_EVENT_TYPE, IRRELEVANT_HANDLER2)
+            expect(_.bus.routes).to.have.key(IRRELEVANT_EVENT_TYPE)
+            expect(_.bus.routes.get(IRRELEVANT_EVENT_TYPE)).to.be.equal([IRRELEVANT_HANDLER1, IRRELEVANT_HANDLER2])
 
     with context('queueing commands'):
         pass
