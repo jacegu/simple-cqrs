@@ -17,8 +17,14 @@ class FakeBus(object):
         self._handler_for(command).handle(command)
 
     def _handler_for(self, command):
-        return self.routes[type(command)][0]
+        handlers = self.routes[type(command)]
+        if len(handlers) > 1:
+            raise(InvalidOperationError())
+        else:
+            return handlers[0]
 
+class InvalidOperationError(RuntimeError):
+    pass
 
 class DummyCommand(object):
     pass
