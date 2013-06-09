@@ -31,7 +31,7 @@ class InMemoryEventStore(object):
 
     def get_events_for_aggregate(self, aggregate_id):
         if self._there_are_events_for(aggregate_id):
-            return [event_data['event'] for event_data in self.events[aggregate_id]]
+            return self._all_events_for(aggregate_id)
         else:
             raise AggregateNotFoundError()
 
@@ -49,6 +49,8 @@ class InMemoryEventStore(object):
     def _store(self, aggregate_id, event, version):
         self.events.setdefault(aggregate_id, []).append({'event': event, 'version': version})
 
+    def _all_events_for(self, aggregate_id):
+        return [event_data['event'] for event_data in self.events[aggregate_id]]
 
 class AggregateNotFoundError(RuntimeError):
     pass
