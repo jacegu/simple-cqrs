@@ -18,6 +18,9 @@ class FakeBus(object):
         self._handler_for(command).handle(command)
 
     def _handler_for(self, command):
+        if not type(command) in self.routes:
+            raise(InvalidOperationError())
+
         handlers = self.routes[type(command)]
         if len(handlers) > 1:
             raise(InvalidOperationError())
