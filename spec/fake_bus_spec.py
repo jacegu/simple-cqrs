@@ -61,9 +61,8 @@ with describe('FakeBus') as _:
             _.bus.register_handler(DummyCommand, IRRELEVANT_HANDLER2)
             expect(_.bus.send).when.called_with(_.command).to.throw(InvalidOperationError)
 
-        @skip
         def it_raises_an_error_if_no_handler_for_command_is_found():
-            pass
+            expect(_.bus.send).when.called_with(_.command).to.throw(InvalidOperationError)
 
     with context('publishing events'):
         pass
