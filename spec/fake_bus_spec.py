@@ -18,14 +18,17 @@ class FakeBus(object):
         self._handler_for(command).handle(command)
 
     def _handler_for(self, command):
-        if not type(command) in self.routes:
-            raise(InvalidOperationError('No handler for command ' + str(type(command)) + ' found'))
+        self._check_that_handler_registered_for(command)
 
         handlers = self.routes[type(command)]
         if len(handlers) > 1:
             raise(InvalidOperationError(str(type(command)) + ' has more than one handler'))
         else:
             return handlers[0]
+
+    def _check_that_handler_registered_for(self, command):
+        if not type(command) in self.routes:
+            raise(InvalidOperationError('No handler for command ' + str(type(command)) + ' found'))
 
 class DummyCommand(object):
     pass
