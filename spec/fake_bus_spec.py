@@ -1,6 +1,19 @@
 from mamba import describe, context, before
 from sure import *
 
+
+from spec.constants import *
+
+
+class FakeBus(object):
+    def __init__(self):
+        self.routes = {}
+
+    def register_handler(self, message, handler):
+        self.routes[message] = [handler]
+
+
+
 with describe('FakeBus') as _:
 
     with context('registering handlers'):
