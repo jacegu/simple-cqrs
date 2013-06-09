@@ -2,8 +2,8 @@
 class Repository(object):
     FIRST_VERSION = -1
 
-    def __init__(self, klass, storage):
-        self.klass = klass
+    def __init__(self, aggregate_class, storage):
+        self.aggregate_class = aggregate_class
         self.storage = storage
 
     def save(self, aggregate, version = FIRST_VERSION):
@@ -16,7 +16,7 @@ class Repository(object):
         return self._create_aggregate_from_events(self.storage.get_events_for_aggregate(id))
 
     def _create_aggregate_from_events(self, events):
-        return None if len(events) is 0 else self.klass.from_events(events)
+        return None if len(events) is 0 else self.aggregate_class.from_events(events)
 
 
 class InMemoryEventStore(object):
