@@ -25,8 +25,7 @@ class InMemoryEventStore(object):
         self.events = {}
 
     def push(self, aggregate_id, event, version):
-        if self._there_are_events_for(aggregate_id):
-            self._verify_version(aggregate_id, version)
+        self._verify_version(aggregate_id, version)
         self._store(aggregate_id, event, version)
         self.publisher.publish(event)
 
@@ -40,7 +39,8 @@ class InMemoryEventStore(object):
         return aggregate_id in self.events
 
     def _verify_version(self, aggregate_id, provided_version):
-        if provided_version != self._next_version_of(aggregate_id):
+        if self._there_are_events_for(aggregate_id) \
+           and provided_version != self._next_version_of(aggregate_id):
             raise ConcurrencyError()
 
     def _next_version_of(self, aggregate_id):
