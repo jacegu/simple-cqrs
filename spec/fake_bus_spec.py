@@ -13,6 +13,9 @@ class FakeBus(object):
     def register_handler(self, event_or_command, handler):
         self.routes.setdefault(event_or_command, []).append(handler)
 
+    def send(self, command):
+        self.routes[command.__class__][0].handle(command)
+
 
 class DummyCommand(object):
     pass
