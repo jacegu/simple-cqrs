@@ -47,8 +47,8 @@ with describe('an example Aggregate') as _:
             event1 = Spy()
             event2 = Spy()
             DummyAggregate.from_events([event1, event2])
-            assert_that(event1.apply_changes, called().with_args(instance_of(DummyAggregate), False))
-            assert_that(event2.apply_changes, called().with_args(instance_of(DummyAggregate), False))
+            assert_that(event1.apply_changes, called().with_args(instance_of(DummyAggregate)))
+            assert_that(event2.apply_changes, called().with_args(instance_of(DummyAggregate)))
 
     with context('uncommitted changes'):
         def starts_with_no_none():
