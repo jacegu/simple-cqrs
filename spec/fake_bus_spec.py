@@ -10,10 +10,7 @@ class FakeBus(object):
         self.routes = {}
 
     def register_handler(self, event_or_command, handler):
-        if not event_or_command in self.routes:
-            self.routes[event_or_command] = []
-        self.routes[event_or_command].append(handler)
-
+        self.routes.setdefault(event_or_command, []).append(handler)
 
 
 with describe('FakeBus') as _:
