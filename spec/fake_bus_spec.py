@@ -1,5 +1,6 @@
-from mamba import describe, context, before
+from mamba import describe, context, before, skip
 from sure import *
+from doublex import *
 
 
 from spec.constants import *
@@ -12,6 +13,9 @@ class FakeBus(object):
     def register_handler(self, event_or_command, handler):
         self.routes.setdefault(event_or_command, []).append(handler)
 
+
+class DummyCommand(object):
+    pass
 
 with describe('FakeBus') as _:
 
@@ -31,8 +35,21 @@ with describe('FakeBus') as _:
             expect(_.bus.routes).to.have.key(IRRELEVANT_EVENT_TYPE)
             expect(_.bus.routes.get(IRRELEVANT_EVENT_TYPE)).to.be.equal([IRRELEVANT_HANDLER1, IRRELEVANT_HANDLER2])
 
-    with context('queueing commands'):
-        pass
+    with context('sending commands'):
+        def it_handles_the_event_if_the_command_has_a_single_handler():
+            handler = Spy()
+            command = DummyCommand()
+            _.bus.register_handler(DummyCommand, handler)
+            _.bus.send(command)
+            assert_that(handler.handle, called().with_args(command))
+
+        @skip
+        def it_raises_an_error_if_the_command_has_more_than_one_handler():
+            pass
+
+        @skip
+        def it_raises_an_error_if_no_handler_for_command_is_found():
+            pass
 
     with context('publishing events'):
         pass
