@@ -1,4 +1,5 @@
 from simplecqrs.aggregate import Aggregate
+from simplecqrs.errors import InvalidOperationError
 
 class InventoryItem(Aggregate):
     def __init__(self, id = None, name = ''):
@@ -76,7 +77,3 @@ class ItemsRemovedFromInventory(object):
 
     def apply_changes(self, inventory_item):
         inventory_item.count -= self.count
-
-
-class InvalidOperationError(RuntimeError):
-    pass

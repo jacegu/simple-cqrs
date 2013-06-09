@@ -5,6 +5,7 @@ from doublex import *
 
 from spec.constants import *
 
+from simplecqrs.errors import InvalidOperationError
 
 class FakeBus(object):
     def __init__(self):
@@ -22,9 +23,6 @@ class FakeBus(object):
             raise(InvalidOperationError())
         else:
             return handlers[0]
-
-class InvalidOperationError(RuntimeError):
-    pass
 
 class DummyCommand(object):
     pass
