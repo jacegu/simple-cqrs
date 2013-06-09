@@ -6,6 +6,7 @@ class Aggregate(object):
     def from_events(cls, events):
         aggregate = cls()
         for event in events: event.apply_changes(aggregate, False)
+        aggregate.uncommitted_changes = []
         return aggregate
 
     def changes_committed(self):
