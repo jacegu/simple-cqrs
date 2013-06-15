@@ -5,19 +5,19 @@ from spec.constants import *
 
 class InMemoryDataBase(object):
     def __init__(self):
-        self.inventory_items_dtos = []
+        self.inventory_items_dtos = {}
         self.inventory_item_details_dtos = {}
 
     @property
     def inventory_items(self):
-        return self.inventory_items_dtos
+        return self.inventory_items_dtos.values()
+
+    def add_inventory_item(self, inventory_item_dto):
+        self.inventory_items_dtos[inventory_item_dto.id] = inventory_item_dto
 
     @property
     def inventory_item_details(self):
         return self.inventory_item_details_dtos.values()
-
-    def add_inventory_item(self, inventory_item_dto):
-        self.inventory_items.append(inventory_item_dto)
 
     def add_inventory_item_details(self, inventory_item_details_dto):
         self.inventory_item_details_dtos[inventory_item_details_dto.id] = inventory_item_details_dto
@@ -56,8 +56,8 @@ with describe('InMemoryDataBase') as _:
             expect(_.db.inventory_items).to.have.length_of(1)
 
         def it_can_list_all_inventory_items():
-            dto1 = InventoryItemDto(IRRELEVANT_ID, IRRELEVANT_NAME)
-            dto2 = InventoryItemDto(OTHER_ID, OTHER_NAME)
+            dto1 = InventoryItemDto(OTHER_ID, OTHER_NAME)
+            dto2 = InventoryItemDto(IRRELEVANT_ID, IRRELEVANT_NAME)
             _.db.add_inventory_item(dto1)
             _.db.add_inventory_item(dto2)
             expect(_.db.inventory_items).to.be.equal([dto1, dto2])
