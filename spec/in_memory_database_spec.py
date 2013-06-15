@@ -1,4 +1,4 @@
-from mamba import describe, context, before
+from mamba import describe, context, before, skip
 from sure import *
 
 from spec.constants import *
@@ -46,6 +46,10 @@ with describe('InMemoryDataBase') as _:
             _.db.add_inventory_item(dto1)
             _.db.add_inventory_item(dto2)
             expect(_.db.inventory_items).to.be.equal([dto1, dto2])
+
+        @skip
+        def it_can_remove_a_particular_item():
+            pass
 
     with context('inventory item details'):
 
