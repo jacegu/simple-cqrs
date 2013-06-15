@@ -11,6 +11,9 @@ from simplecqrs.errors import InvalidOperationError
 class DummyCommand(object):
     pass
 
+class DummyEvent(object):
+    pass
+
 
 with describe('FakeBus') as _:
 
@@ -50,4 +53,13 @@ with describe('FakeBus') as _:
             expect(_.bus.send).when.called_with(_.command).to.throw(InvalidOperationError)
 
     with context('publishing events'):
-        pass
+        def it_dispatches_the_handler_for_the_published_event():
+            handler = Spy()
+            _.event = DummyEvent()
+            _.bus.register_handler(DummyEvent, handler)
+            _.bus.publish(_.event)
+            assert_that(handler.handle, called().with_args(_.event))
+
+        @skip
+        def it_does_nothing_when_no_halder_for_published_event_is_found():
+            pass
