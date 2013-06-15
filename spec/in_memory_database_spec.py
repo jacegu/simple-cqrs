@@ -2,7 +2,9 @@ from mamba import describe, context
 from sure import *
 
 class InMemoryDataBase(object):
-    pass
+    @property
+    def inventory_items(self):
+        return []
 
 with describe('InMemoryDataBase') as _:
 
