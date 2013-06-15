@@ -5,8 +5,16 @@ from spec.constants import *
 
 class InMemoryDataBase(object):
     def __init__(self):
-        self.inventory_items = []
-        self.inventory_item_details = {}
+        self.inventory_items_dtos = []
+        self.inventory_item_details_dtos = {}
+
+    @property
+    def inventory_items(self):
+        return self.inventory_items_dtos
+
+    @property
+    def inventory_item_details(self):
+        return self.inventory_item_details_dtos
 
     def add_inventory_item(self, inventory_item_dto):
         self.inventory_items.append(inventory_item_dto)
