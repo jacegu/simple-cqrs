@@ -59,22 +59,23 @@ with describe('InMemoryDataBase') as _:
             pass
 
     with context('inventory item details'):
+        @before.each
+        def create_dto():
+            _.dto = InventoryItemDetailsDto(IRRELEVANT_ID, IRRELEVANT_NAME, \
+                                            IRRELEVANT_COUNT, IRRELEVANT_VERSION)
 
         def it_starts_with_no_inventory_item_details():
             expect(_.db.inventory_item_details).to.be.empty
 
         def it_can_add_new_inventory_item_details():
-            dto = InventoryItemDetailsDto(IRRELEVANT_ID, IRRELEVANT_NAME, IRRELEVANT_COUNT, IRRELEVANT_VERSION)
-            _.db.add_inventory_item_details(dto)
+            _.db.add_inventory_item_details(_.dto)
             expect(_.db.inventory_item_details).to.have.length_of(1)
 
         def it_can_remove_inventory_item_details():
-            dto = InventoryItemDetailsDto(IRRELEVANT_ID, IRRELEVANT_NAME, IRRELEVANT_COUNT, IRRELEVANT_VERSION)
-            _.db.add_inventory_item_details(dto)
+            _.db.add_inventory_item_details(_.dto)
             _.db.remove_inventory_item_details(IRRELEVANT_ID)
             expect(_.db.inventory_item_details).to.be.empty
 
         def it_can_get_inventory_item_details_by_id():
-            dto = InventoryItemDetailsDto(IRRELEVANT_ID, IRRELEVANT_NAME, IRRELEVANT_COUNT, IRRELEVANT_VERSION)
-            _.db.add_inventory_item_details(dto)
-            expect(_.db.get_inventory_item_details(IRRELEVANT_ID)).to.be.equal(dto)
+            _.db.add_inventory_item_details(_.dto)
+            expect(_.db.get_inventory_item_details(IRRELEVANT_ID)).to.be.equal(_.dto)
