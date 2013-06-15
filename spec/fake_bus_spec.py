@@ -56,15 +56,14 @@ with describe('FakeBus') as _:
         @before.each
         def create_event():
             _.event = DummyEvent()
+            _.handler = Spy()
 
         def it_dispatches_the_handler_for_the_published_event():
-            handler = Spy()
-            _.bus.register_handler(DummyEvent, handler)
+            _.bus.register_handler(DummyEvent, _.handler)
             _.bus.publish(_.event)
-            assert_that(handler.handle, called().with_args(_.event))
+            assert_that(_.handler.handle, called().with_args(_.event))
 
         def it_does_nothing_when_no_halder_for_published_event_is_found():
-            handler = Spy()
             _.bus.publish(_.event)
-            assert_that(handler.handle, never(called()))
+            assert_that(_.handler.handle, never(called()))
 
