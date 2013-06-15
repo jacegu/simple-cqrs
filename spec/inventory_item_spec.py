@@ -4,6 +4,7 @@ from sure import expect
 from spec.constants import *
 
 from simplecqrs.inventory import InventoryItem, InvalidOperationError
+from simplecqrs.events import *
 
 with describe(InventoryItem) as _:
 
