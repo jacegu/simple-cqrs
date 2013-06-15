@@ -53,9 +53,12 @@ with describe('FakeBus') as _:
             expect(_.bus.send).when.called_with(_.command).to.throw(InvalidOperationError)
 
     with context('publishing events'):
+        @before.each
+        def create_event():
+            _.event = DummyEvent()
+
         def it_dispatches_the_handler_for_the_published_event():
             handler = Spy()
-            _.event = DummyEvent()
             _.bus.register_handler(DummyEvent, handler)
             _.bus.publish(_.event)
             assert_that(handler.handle, called().with_args(_.event))
