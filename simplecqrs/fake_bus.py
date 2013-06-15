@@ -13,6 +13,7 @@ class FakeBus(object):
     def publish(self, event):
         for handler in self._all_handlers_for(event):
             handler.handle(event)
+            return
 
     def _handler_for(self, command):
         self._check_that_has_handlers(command)

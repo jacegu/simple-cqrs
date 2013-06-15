@@ -59,9 +59,12 @@ with describe('FakeBus') as _:
             _.handler = Spy()
 
         def it_dispatches_the_handler_for_the_published_event():
+            handler2 = Spy()
             _.bus.register_handler(DummyEvent, _.handler)
+            _.bus.register_handler(DummyEvent, handler2)
             _.bus.publish(_.event)
             assert_that(_.handler.handle, called().with_args(_.event))
+            assert_that(handler2.handle, called().with_args(_.event))
 
         def it_does_nothing_when_no_halder_for_published_event_is_found():
             _.bus.publish(_.event)
