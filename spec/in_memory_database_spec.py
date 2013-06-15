@@ -3,6 +3,7 @@ from sure import *
 
 from spec.constants import *
 
+
 class InMemoryDataBase(object):
     def __init__(self):
         self.inventory_items_dtos = {}
@@ -37,12 +38,14 @@ class InventoryItemDto(object):
         self.id = id
         self.name = name
 
+
 class InventoryItemDetailsDto(object):
     def __init__(self, id, name, count, version):
         self.id = id
         self.name = name
         self.count = count
         self.version = version
+
 
 with describe('InMemoryDataBase') as _:
 
