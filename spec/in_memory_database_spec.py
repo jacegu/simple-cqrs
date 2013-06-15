@@ -43,7 +43,7 @@ with describe('InMemoryDataBase') as _:
     with context('inventory item details'):
 
         def it_starts_with_no_inventory_item_details():
-            pass
+            expect(_.db.inventory_item_details).to.be.empty
 
         def it_can_add_new_inventory_item_details():
             pass
