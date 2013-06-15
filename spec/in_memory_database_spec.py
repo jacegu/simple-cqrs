@@ -1,4 +1,4 @@
-from mamba import describe, context
+from mamba import describe, context, before
 from sure import *
 
 from spec.constants import *
@@ -20,15 +20,17 @@ class InventoryItemDto(object):
 
 with describe('InMemoryDataBase') as _:
 
+    @before.each
+    def create_db():
+        _.db = InMemoryDataBase()
+
     with context('inventory items'):
         def it_starts_with_no_inventory_item_dtos():
-            db = InMemoryDataBase()
-            expect(db.inventory_items).to.be.empty
+            expect(_.db.inventory_items).to.be.empty
 
         def it_can_add_inventory_item_dtos():
-            db = InMemoryDataBase()
-            db.add(InventoryItemDto(IRRELEVANT_ID, IRRELEVANT_NAME))
-            expect(db.inventory_items).to.have.length_of(1)
+            _.db.add(InventoryItemDto(IRRELEVANT_ID, IRRELEVANT_NAME))
+            expect(_.db.inventory_items).to.have.length_of(1)
 
     with context('inventory item details'):
         pass
