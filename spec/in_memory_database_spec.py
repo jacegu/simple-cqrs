@@ -16,7 +16,8 @@ class InMemoryDataBase(object):
 
 class InventoryItemDto(object):
     def __init__(self, id, name):
-        pass
+        self.id = id
+        self.name = name
 
 with describe('InMemoryDataBase') as _:
 
