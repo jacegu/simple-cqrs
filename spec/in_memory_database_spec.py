@@ -17,6 +17,10 @@ class InMemoryDataBase(object):
     def remove_inventory_item_details(self, inventory_item_details_id):
         del(self.inventory_item_details[inventory_item_details_id])
 
+    def get_inventory_item_details(self, inventory_item_details_id):
+        return self.inventory_item_details[inventory_item_details_id]
+
+
 class InventoryItemDto(object):
     def __init__(self, id, name):
         self.id = id
