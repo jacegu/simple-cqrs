@@ -62,7 +62,10 @@ with describe('InMemoryDataBase') as _:
             expect(_.db.inventory_item_details).to.have.length_of(1)
 
         def it_can_remove_inventory_item_details():
-            pass
+            dto = InventoryItemDetailsDto(IRRELEVANT_ID, IRRELEVANT_NAME, IRRELEVANT_COUNT, IRRELEVANT_VERSION)
+            _.db.add_inventory_item_details(dto)
+            _.db.remove_inventory_item_details(IRRELEVANT_ID)
+            expect(_.db.inventory_item_details).to.be.empty
 
         def it_can_find_inventory_item_details_by_id():
             pass
