@@ -11,6 +11,9 @@ class InMemoryDataBase(object):
     def add_inventory_item(self, inventory_item_dto):
         self.inventory_items.append(inventory_item_dto)
 
+    def add_inventory_item_details(self, inventory_item_details_dto):
+        self.inventory_item_details[inventory_item_details_dto.id] = inventory_item_details_dto
+
 class InventoryItemDto(object):
     def __init__(self, id, name):
         self.id = id
