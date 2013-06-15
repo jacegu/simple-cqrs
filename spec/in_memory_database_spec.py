@@ -29,11 +29,11 @@ with describe('InMemoryDataBase') as _:
         def it_starts_with_no_inventory_item_dtos():
             expect(_.db.inventory_items).to.be.empty
 
-        def it_can_add_inventory_item_dtos():
+        def it_can_add_inventory_items():
             _.db.add_inventory_item(InventoryItemDto(IRRELEVANT_ID, IRRELEVANT_NAME))
             expect(_.db.inventory_items).to.have.length_of(1)
 
-        def it_can_list_all_inventory_item_dtos():
+        def it_can_list_all_inventory_items():
             dto1 = InventoryItemDto(IRRELEVANT_ID, IRRELEVANT_NAME)
             dto2 = InventoryItemDto(OTHER_ID, OTHER_NAME)
             _.db.add_inventory_item(dto1)
