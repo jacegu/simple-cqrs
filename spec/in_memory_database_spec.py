@@ -70,5 +70,7 @@ with describe('InMemoryDataBase') as _:
             _.db.remove_inventory_item_details(IRRELEVANT_ID)
             expect(_.db.inventory_item_details).to.be.empty
 
-        def it_can_find_inventory_item_details_by_id():
-            pass
+        def it_can_get_inventory_item_details_by_id():
+            dto = InventoryItemDetailsDto(IRRELEVANT_ID, IRRELEVANT_NAME, IRRELEVANT_COUNT, IRRELEVANT_VERSION)
+            _.db.add_inventory_item_details(dto)
+            expect(_.db.get_inventory_item_details(IRRELEVANT_ID)).to.be.equal(dto)
