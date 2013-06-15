@@ -77,7 +77,7 @@ with describe('InMemoryDataBase') as _:
 
         def it_can_add_new_inventory_item_details():
             _.db.add_inventory_item_details(_.dto)
-            expect(_.db.inventory_item_details).to.have.length_of(1)
+            expect(_.db.inventory_item_details).to.be.equal([_.dto])
 
         def it_can_remove_inventory_item_details():
             _.db.add_inventory_item_details(_.dto)
