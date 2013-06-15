@@ -63,6 +63,8 @@ with describe('FakeBus') as _:
             _.bus.publish(_.event)
             assert_that(handler.handle, called().with_args(_.event))
 
-        @skip
         def it_does_nothing_when_no_halder_for_published_event_is_found():
-            pass
+            handler = Spy()
+            _.bus.publish(_.event)
+            assert_that(handler.handle, never(called()))
+
