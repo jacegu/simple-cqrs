@@ -11,7 +11,7 @@ class InMemoryDataBase(object):
     def inventory_items(self):
         return self.inventory_item_dtos
 
-    def add(self, inventory_item_dto):
+    def add_inventory_item(self, inventory_item_dto):
         self.inventory_item_dtos.append(inventory_item_dto)
 
 class InventoryItemDto(object):
@@ -29,14 +29,14 @@ with describe('InMemoryDataBase') as _:
             expect(_.db.inventory_items).to.be.empty
 
         def it_can_add_inventory_item_dtos():
-            _.db.add(InventoryItemDto(IRRELEVANT_ID, IRRELEVANT_NAME))
+            _.db.add_inventory_item(InventoryItemDto(IRRELEVANT_ID, IRRELEVANT_NAME))
             expect(_.db.inventory_items).to.have.length_of(1)
 
         def it_can_list_all_inventory_item_dtos():
             dto1 = InventoryItemDto(IRRELEVANT_ID, IRRELEVANT_NAME)
             dto2 = InventoryItemDto(OTHER_ID, OTHER_NAME)
-            _.db.add(dto1)
-            _.db.add(dto2)
+            _.db.add_inventory_item(dto1)
+            _.db.add_inventory_item(dto2)
             expect(_.db.inventory_items).to.be.equal([dto1, dto2])
 
     with context('inventory item details'):
