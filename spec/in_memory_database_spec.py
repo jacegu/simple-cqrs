@@ -62,9 +62,11 @@ with describe('InMemoryDataBase') as _:
             _.db.add_inventory_item(dto2)
             expect(_.db.inventory_items).to.be.equal([dto1, dto2])
 
-        @skip
         def it_can_remove_a_particular_item():
-            pass
+            dto1 = InventoryItemDto(OTHER_ID, OTHER_NAME)
+            _.db.add_inventory_item(dto1)
+            _.db.remove_inventory_item(OTHER_ID)
+            expect(_.db.inventory_items).to.be.empty
 
     with context('inventory item details'):
         @before.each
