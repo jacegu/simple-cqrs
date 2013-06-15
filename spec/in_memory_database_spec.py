@@ -41,4 +41,15 @@ with describe('InMemoryDataBase') as _:
             expect(_.db.inventory_items).to.be.equal([dto1, dto2])
 
     with context('inventory item details'):
-        pass
+
+        def it_starts_with_no_inventory_item_details():
+            pass
+
+        def it_can_add_new_inventory_item_details():
+            pass
+
+        def it_can_remove_inventory_item_details():
+            pass
+
+        def it_can_find_inventory_item_details_by_id():
+            pass
