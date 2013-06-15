@@ -32,5 +32,12 @@ with describe('InMemoryDataBase') as _:
             _.db.add(InventoryItemDto(IRRELEVANT_ID, IRRELEVANT_NAME))
             expect(_.db.inventory_items).to.have.length_of(1)
 
+        def it_can_list_all_inventory_item_dtos():
+            dto1 = InventoryItemDto(IRRELEVANT_ID, IRRELEVANT_NAME)
+            dto2 = InventoryItemDto(OTHER_ID, OTHER_NAME)
+            _.db.add(dto1)
+            _.db.add(dto2)
+            expect(_.db.inventory_items).to.be.equal([dto1, dto2])
+
     with context('inventory item details'):
         pass

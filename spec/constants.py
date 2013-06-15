@@ -1,6 +1,7 @@
-IRRELEVANT_NAME       = 'irrelevant name'
 OTHER_NAME            = 'other name'
+OTHER_ID              = 'other id'
 IRRELEVANT_ID         = 'irrelevant id'
+IRRELEVANT_NAME       = 'irrelevant name'
 AGGREGATE_ID          = 'aggregate id'
 IRRELEVANT_CHANGE1    = 'irrelevant change 1'
 IRRELEVANT_CHANGE2    = 'irrelevant change 2'
