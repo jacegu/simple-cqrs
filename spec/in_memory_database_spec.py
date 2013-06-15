@@ -14,19 +14,19 @@ class InMemoryDataBase(object):
 
     @property
     def inventory_item_details(self):
-        return self.inventory_item_details_dtos
+        return self.inventory_item_details_dtos.values()
 
     def add_inventory_item(self, inventory_item_dto):
         self.inventory_items.append(inventory_item_dto)
 
     def add_inventory_item_details(self, inventory_item_details_dto):
-        self.inventory_item_details[inventory_item_details_dto.id] = inventory_item_details_dto
+        self.inventory_item_details_dtos[inventory_item_details_dto.id] = inventory_item_details_dto
 
     def remove_inventory_item_details(self, inventory_item_details_id):
-        del(self.inventory_item_details[inventory_item_details_id])
+        del(self.inventory_item_details_dtos[inventory_item_details_id])
 
     def get_inventory_item_details(self, inventory_item_details_id):
-        return self.inventory_item_details[inventory_item_details_id]
+        return self.inventory_item_details_dtos[inventory_item_details_id]
 
 
 class InventoryItemDto(object):
