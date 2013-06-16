@@ -9,6 +9,13 @@ from simplecqrs.view_model import *
 IRRELEVANT_INVENTORY_ITEM_DTO1 = 'irrelevant inventory item dto 1'
 IRRELEVANT_INVENTORY_ITEM_DTO2 = 'irrelevant inventory item dto 2'
 
+class ReadModel(object):
+    def __init__(self, database):
+        self.database = database
+
+    def get_inventory_items(self):
+        return self.database.inventory_items
+
 with describe('ReadModel') as _:
 
     def it_returns_all_the_inventory_items():
