@@ -16,11 +16,15 @@ class ReadModel(object):
     def get_inventory_items(self):
         return self.database.inventory_items
 
+
 with describe('ReadModel') as _:
 
-    def it_returns_all_the_inventory_items():
+    @before.each
+    def creat_read_model():
         _.db = Stub()
         _.read_model = ReadModel(_.db)
+
+    def it_returns_all_the_inventory_items():
         dtos = [IRRELEVANT_INVENTORY_ITEM_DTO1, IRRELEVANT_INVENTORY_ITEM_DTO2]
         with _.db as db: db.inventory_items = dtos
         expect(_.read_model.get_inventory_items()).to.be.equal(dtos)
