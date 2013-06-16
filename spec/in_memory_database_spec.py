@@ -1,22 +1,10 @@
-from mamba import describe, context, before, skip
+from mamba import describe, context, before
 from sure import *
 
 from spec.constants import *
 
+from simplecqrs.view_model import InventoryItemDto, InventoryItemDetailsDto
 from simplecqrs.in_memory_database import InMemoryDataBase
-
-class InventoryItemDto(object):
-    def __init__(self, id, name):
-        self.id = id
-        self.name = name
-
-
-class InventoryItemDetailsDto(object):
-    def __init__(self, id, name, count, version):
-        self.id = id
-        self.name = name
-        self.count = count
-        self.version = version
 
 
 with describe('InMemoryDataBase') as _:
