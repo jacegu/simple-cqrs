@@ -4,21 +4,11 @@ from doublex import *
 
 from spec.constants import *
 
-from simplecqrs.view_model import *
+from simplecqrs.view_model import ReadModel
 
 IRRELEVANT_INVENTORY_ITEM_DTO1 = 'irrelevant inventory item dto 1'
 IRRELEVANT_INVENTORY_ITEM_DTO2 = 'irrelevant inventory item dto 2'
 IRRELEVANT_INVENTORY_ITEM_DETAILS_DTO = 'irrelevant inventory item details dto'
-
-class ReadModel(object):
-    def __init__(self, database):
-        self.database = database
-
-    def get_inventory_items(self):
-        return self.database.inventory_items
-
-    def get_inventory_item_details(self, id):
-        return self.database.get_inventory_item_details(id)
 
 
 with describe('ReadModel') as _:
