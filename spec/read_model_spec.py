@@ -17,6 +17,9 @@ class ReadModel(object):
     def get_inventory_items(self):
         return self.database.inventory_items
 
+    def get_inventory_item_details(self, id):
+        return self.database.get_inventory_item_details(id)
+
 
 with describe('ReadModel') as _:
 
