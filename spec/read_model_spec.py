@@ -6,10 +6,6 @@ from spec.constants import *
 
 from simplecqrs.view_model import ReadModel
 
-IRRELEVANT_INVENTORY_ITEM_DTO1 = 'irrelevant inventory item dto 1'
-IRRELEVANT_INVENTORY_ITEM_DTO2 = 'irrelevant inventory item dto 2'
-IRRELEVANT_INVENTORY_ITEM_DETAILS_DTO = 'irrelevant inventory item details dto'
-
 
 with describe('ReadModel') as _:
 
