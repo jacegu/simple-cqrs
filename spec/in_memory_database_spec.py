@@ -4,14 +4,14 @@ from sure import *
 from spec.constants import *
 
 from simplecqrs.view_model import InventoryItemDto, InventoryItemDetailsDto
-from simplecqrs.in_memory_database import InMemoryDataBase
+from simplecqrs.in_memory_database import InMemoryDatabase
 
 
 with describe('InMemoryDataBase') as _:
 
     @before.each
     def create_db():
-        _.db = InMemoryDataBase()
+        _.db = InMemoryDatabase()
 
     with context('inventory items'):
         def it_starts_with_no_inventory_item_dtos():

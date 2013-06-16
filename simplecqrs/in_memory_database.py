@@ -1,4 +1,4 @@
-class InMemoryDataBase(object):
+class InMemoryDatabase(object):
     def __init__(self):
         self.inventory_items_dtos = {}
         self.inventory_item_details_dtos = {}
